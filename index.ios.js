@@ -18,24 +18,37 @@ import {
   TouchableHighlight
 } from 'react-native';
 
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware, compose } from 'redux';
+import thunkMiddleware from 'redux-thunk';
 
 
-import Pokedex from './js/Pokedex';
+import PokedexContainer from './js/PokedexContainer';
+import reducer from './js/reducers'
+
+var store    = createStore(
+  reducer,
+  applyMiddleware(
+    thunkMiddleware
+  )
+)
 
 class ReactNativePokedex extends Component {
   render() {
     return (
-      <NavigatorIOS
-        initialRoute={{
-          title: "Pokédex",
-          component: Pokedex,
-          passProps: { title: 'foo' },
-          titleTextColor: 'red'
-        }}
-        tintColor="#008888"
-        style={{flex: 1, borderBottomColor: 'red', borderBottomWidth: 4}}
-        barTintColor='#fff'
-        />
+      <Provider store={store}>
+        <NavigatorIOS
+          initialRoute={{
+            title: "Pokédex",
+            component: PokedexContainer,
+            passProps: { title: 'foo' },
+            titleTextColor: 'red'
+          }}
+          tintColor="#008888"
+          style={{flex: 1, borderBottomColor: 'red', borderBottomWidth: 4}}
+          barTintColor='#fff'
+          />
+      </Provider>
     );
   }
 }
