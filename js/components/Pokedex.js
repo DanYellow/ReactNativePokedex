@@ -30,7 +30,7 @@ export default class Pokedex extends Component {
   }
 
   componentWillMount() {
-    for (var i = 1; i < 2; i++) {
+    for (var i = 1; i < 43; i++) {
       this.props.dispatch(fetchPkmn(i));
     }
   }
@@ -52,7 +52,7 @@ export default class Pokedex extends Component {
     return (
        <TouchableHighlight 
         underlayColor={'#ffa7a7'} 
-        style={styles.collectionItem} 
+        style={[styles.collectionItem, collectionItemBorder(datas.typesString[0])]} 
         accessibilityLabel={datas.name}
         onPress={this._onPressButton.bind(this, rowID, rowData)}>
           <PokedexItem datas={datas}/>
@@ -69,7 +69,6 @@ export default class Pokedex extends Component {
 
   render() {
     if (this.props.pkmns.length) {
-      console.log(this.state)
       return (
         <ListView
           contentContainerStyle={styles.collection}
@@ -85,13 +84,29 @@ export default class Pokedex extends Component {
         />
       )
     } else {
-      return (
-        <View style={styles.loader}>
-          <Image source={require('../img/pokedex-loader.gif')} />
-          <Text>Loading</Text>
-        </View>
-      )
+      if (this.props.search) {
+        return (
+          <View style={styles.loader}>
+            <Image source={require('../img/pokdex-no-results.gif')} />
+            <Text>No results</Text>
+          </View>
+        )
+      } else {
+        return (
+          <View style={styles.loader}>
+            <Image source={require('../img/pokedex-loader.gif')} />
+            <Text>Loading</Text>
+          </View>
+        )
+      }
+      
     }
+  }
+}
+
+var collectionItemBorder = function (type) {
+  return {
+    borderColor: Helpers.Utils.typeColor(type)
   }
 }
 
@@ -100,7 +115,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     paddingVertical: 20,
-    paddingHorizontal: 10,
+    paddingHorizontal: 1,
   },
   collectionItem: {
     margin: 3,
@@ -108,7 +123,6 @@ const styles = StyleSheet.create({
     height: (width / 3.20),
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: Helpers.Utils.typeColor(datas.typesString[0]),
     borderWidth: 0.5
   },
   text: {

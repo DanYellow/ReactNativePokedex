@@ -7,6 +7,7 @@ import _ from 'lodash'
 import Pokedex from '../components/Pokedex'
 
 var searchValue = '';
+var typeSearch = ''
 
 const filterPkmns = (pkmns, filter = '') => {
   pkmns = _.map(pkmns, getArrayTypes);
@@ -20,11 +21,19 @@ const filterPkmns = (pkmns, filter = '') => {
     if ((new RegExp(/^\d+$/).test(searchValue))) {
       return pkmns.filter(function(pkmn) {
         return pkmn.datas.id == searchValue;
-      })
+      });
     } else {
-      return pkmns.filter(function(pkmn) {
-        return pkmn.datas.name.toLowerCase().indexOf(searchValue) > -1;
-      })
+      if (searchValue.indexOf('type') > -1) {
+        typeSearch = searchValue.split(':')[1] || "null"
+        return pkmns.filter(function(pkmn) {
+          return pkmn.datas.typesString.indexOf(typeSearch) > -1;
+        })
+      } else {
+        return pkmns.filter(function(pkmn) {
+          return pkmn.datas.name.toLowerCase().indexOf(searchValue) > -1;
+        });
+      }
+      
     }
     
   }
@@ -55,7 +64,8 @@ const getVersionsAppareance = (pkmn) => {
 
 function mapStateToProps(state) {
   return {
-    pkmns: _.sortBy(filterPkmns(state.pkmns, state.search.text), function(o) { return o.id; })
+    pkmns: _.sortBy(filterPkmns(state.pkmns, state.search.text), function(o) { return o.id; }),
+    search: state.search.text,
   }
 }
 
