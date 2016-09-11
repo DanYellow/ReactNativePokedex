@@ -19,3 +19,7 @@ react-native log-ios
 https://rnplay.org/apps/JwYO8g
 
 https://github.com/sghiassy/react-native-sglistview
+https://github.com/react-native-community/react-native-linear-gradient
+
+
+https://facebook.github.io/react-native/docs/images.html

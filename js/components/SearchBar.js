@@ -4,8 +4,9 @@ import {
   Text, 
   StyleSheet,
   Dimensions,
-  TextInput
-   } 
+  TextInput,
+  SegmentedControlIOS
+}
 from 'react-native';
 
 import { filterPkmns } from '../actions'
@@ -22,8 +23,14 @@ export default class SearchBar extends Component {
   render() {
     return ( 
       <View style={Styles.inputContainer}>
-        <TextInput style={Styles.input} onChange={this.inputValueChanged.bind(this)}></TextInput>
-        <Text>Results : {this.props.pkmns.length}</Text>
+        <Text>{this.props.pkmns.length} finded!</Text>
+        <TextInput style={Styles.input} onChange={this.inputValueChanged.bind(this)} placeholder="Enter a Pokemon name"></TextInput>
+
+        <SegmentedControlIOS 
+          values={['All', 'My favourites']}
+          
+          selectedIndex={0} 
+          onChange={(event) => { this.setState({selectedIndex: event.nativeEvent.selectedSegmentIndex}); }} />
       </View>
     ) 
   } 
@@ -45,11 +52,14 @@ const Styles = StyleSheet.create({
     marginBottom: 10,
     backgroundColor: '#FFF'
   },
-  inputContainer: {
-    padding: 0,
+  container: {
     marginTop: 65,
     alignSelf: 'stretch',
-    backgroundColor: '#F00',
-    padding: 5,
+    backgroundColor: '#eb5d5d',
+    paddingLeft: 15, 
+    paddingRight: 15, 
+    paddingBottom: 5, 
+    borderBottomWidth: 1, 
+    borderBottomColor: 'black'
   }
 });

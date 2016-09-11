@@ -9,7 +9,12 @@ import {
    } 
 from 'react-native';
 
-import PkmnType from './PkmnType'
+import _ from 'lodash'
+
+import PkmnType from './PkmnDetailsComponents/PkmnType'
+import GameVersion from './PkmnDetailsComponents/GameVersion'
+import PkmnSprite from './PkmnDetailsComponents/PkmnSprite'
+
 
 
 export default class PokemonDetails extends Component { 
@@ -17,38 +22,42 @@ export default class PokemonDetails extends Component {
     super(props, context); 
   }
 
-  _displayTypes (typesList) {
-    var types = [];
-    {typesList.map(type =>
-      types.push(<PkmnType name={type} />)
-    )}
-  
-    return types;
+  _versionAppareances (datas) {
+    return _.map(datas, 'version.name')
   }
 
   render() {
     const pkmnDatas = this.props.pkmn;
     // this._displayTypes(pkmnDatas.typesString);
+    // console.log(this._versionAppareances(pkmnDatas.game_indices))
     return (
-      <ScrollView>
+      <ScrollView >
+        <Text style={{ 
+          fontSize: 20,
+          textAlign: 'center' }}>
+            #{pkmnDatas.id}
+        </Text>
+
         <View style={{
             justifyContent: 'center',
             alignItems: 'center',
+            flexDirection: 'row',
+            flex: 1, 
           }}>
-          <Image
-              style={{width: 120, height: 120}}
-              source={{uri: pkmnDatas.sprites.front_default }}
-            />
-        </View>
-        <View style={{
-          flex: .5, 
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}>
-
-        </View>
+            <PkmnSprite image={pkmnDatas.sprites.front_default} />
+            <PkmnSprite image={pkmnDatas.sprites.front_female} />
         
+          
+        </View> 
+        <View style={{
+          flexDirection: 'row',
+          flex: .5,
+                    alignItems: 'center',
+        }}>
+          {pkmnDatas.typesString.map((type, index) =>
+            <PkmnType name={type} key={index}/>
+          )}
+        </View>
       </ScrollView>
     ) 
   } 

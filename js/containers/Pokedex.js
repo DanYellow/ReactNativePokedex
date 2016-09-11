@@ -6,20 +6,49 @@ import _ from 'lodash'
 
 import Pokedex from '../components/Pokedex'
 
+var searchValue = '';
+
 const filterPkmns = (pkmns, filter = '') => {
   pkmns = _.map(pkmns, getArrayTypes);
+  pkmns = _.map(pkmns, getVersionsAppareance);
   
   if (filter.trim() == "") {
     return pkmns;
   } else {
-    return pkmns.filter(function(pkmn) {
-      return pkmn.datas.name.toLowerCase().indexOf(filter.toLowerCase()) > -1
-    })
+    searchValue = filter.toLowerCase()
+
+    if ((new RegExp(/^\d+$/).test(searchValue))) {
+      return pkmns.filter(function(pkmn) {
+        return pkmn.datas.id == searchValue;
+      })
+    } else {
+      return pkmns.filter(function(pkmn) {
+        return pkmn.datas.name.toLowerCase().indexOf() > -1;
+      })
+    }
+    
   }
 }
 
+
+/**
+ * Retrieve in a string array of current Pokemon type
+ * @param  {Object} pkmn A Pokemon datas
+ * @return {Array<String>} List of current Pokemon type
+ */
 const getArrayTypes = (pkmn) => {
   pkmn.datas.typesString = _.reverse(_.map(pkmn.datas.types, 'type.name'));
+
+  return pkmn;
+}
+
+/**
+ * Retrieve in a string array of every Pokemon game where the current Pokemon appears
+ * @param  {Object} pkmn A Pokemon datas
+ * @return {Array<String>} List of every Pokemon game
+ */
+const getVersionsAppareance = (pkmn) => {
+  pkmn.datas.games = _.reverse(_.map(pkmn.datas.game_indices, 'version.name'));
 
   return pkmn;
 }

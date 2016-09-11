@@ -20,11 +20,6 @@ export default class PokedexContainer extends Component {
     return (
       <View style={{flex: 1}}>
         <SearchBar />
-        <SegmentedControlIOS 
-          values={['All', 'My favourites']}
-          style={{paddingLeft: 15}}
-          selectedIndex={0} 
-          onChange={(event) => { this.setState({selectedIndex: event.nativeEvent.selectedSegmentIndex}); }} />
         <Pokedex style={{flex: 1}} navigator={this.props.navigator} />
       </View>
   )}

@@ -29,6 +29,6 @@ export const fetchPkmn = function (idDex) {
       .then(response => response.json())
       .then(function(json) {
         return dispatch(receivePkmn(idDex, json))
-      })
+      }).catch((error) => { console.error(error); })
   }
 }

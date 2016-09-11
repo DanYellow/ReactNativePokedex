@@ -30,7 +30,7 @@ export default class Pokedex extends Component {
   }
 
   componentWillMount() {
-    for (var i = 1; i < 4; i++) {
+    for (var i = 1; i < 20; i++) {
       this.props.dispatch(fetchPkmn(i));
     }
   }
@@ -103,6 +103,8 @@ const styles = StyleSheet.create({
     height: (width / 3.20),
     justifyContent: 'center',
     alignItems: 'center',
+    borderColor: 'gray',
+    borderWidth: 0.5
   },
   text: {
     textAlign: 'center'
