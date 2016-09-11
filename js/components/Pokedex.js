@@ -9,7 +9,7 @@ import {
   Image
 } from 'react-native';
 
-import * as name from '../utils'
+import * as Helpers from '../utils'
 
 import PokedexItem from './PokedexItem'
 import PokemonDetails from './PokemonDetails'
@@ -30,7 +30,7 @@ export default class Pokedex extends Component {
   }
 
   componentWillMount() {
-    for (var i = 1; i < 20; i++) {
+    for (var i = 1; i < 2; i++) {
       this.props.dispatch(fetchPkmn(i));
     }
   }
@@ -51,7 +51,7 @@ export default class Pokedex extends Component {
 
     return (
        <TouchableHighlight 
-        underlayColor={'#f00'} 
+        underlayColor={'#ffa7a7'} 
         style={styles.collectionItem} 
         accessibilityLabel={datas.name}
         onPress={this._onPressButton.bind(this, rowID, rowData)}>
@@ -69,6 +69,7 @@ export default class Pokedex extends Component {
 
   render() {
     if (this.props.pkmns.length) {
+      console.log(this.state)
       return (
         <ListView
           contentContainerStyle={styles.collection}
@@ -85,7 +86,10 @@ export default class Pokedex extends Component {
       )
     } else {
       return (
-        <Text>Loading</Text>
+        <View style={styles.loader}>
+          <Image source={require('../img/pokedex-loader.gif')} />
+          <Text>Loading</Text>
+        </View>
       )
     }
   }
@@ -96,6 +100,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     paddingVertical: 20,
+    paddingHorizontal: 10,
   },
   collectionItem: {
     margin: 3,
@@ -103,7 +108,7 @@ const styles = StyleSheet.create({
     height: (width / 3.20),
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: 'gray',
+    borderColor: Helpers.Utils.typeColor(datas.typesString[0]),
     borderWidth: 0.5
   },
   text: {
@@ -112,6 +117,11 @@ const styles = StyleSheet.create({
   listView: {
     flex:1,
     flexDirection: 'column',
+    backgroundColor: '#f1f1f1'
+  },
+  loader: {
+    flex: 1,
+    alignItems: 'center'
   }
 });
 

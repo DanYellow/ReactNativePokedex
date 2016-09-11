@@ -23,7 +23,7 @@ const filterPkmns = (pkmns, filter = '') => {
       })
     } else {
       return pkmns.filter(function(pkmn) {
-        return pkmn.datas.name.toLowerCase().indexOf() > -1;
+        return pkmn.datas.name.toLowerCase().indexOf(searchValue) > -1;
       })
     }
     
@@ -59,10 +59,6 @@ function mapStateToProps(state) {
   }
 }
 
-// Crée alias de dispatch
-function mapDispatchToProps(dispatch) {
-  return fetchPkmn;
-}
 
 var PokedexContainer = connect(mapStateToProps)(Pokedex)
 

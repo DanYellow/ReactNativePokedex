@@ -22,13 +22,20 @@ export default class SearchBar extends Component {
 
   render() {
     return ( 
-      <View style={Styles.inputContainer}>
-        <Text>{this.props.pkmns.length} finded!</Text>
-        <TextInput style={Styles.input} onChange={this.inputValueChanged.bind(this)} placeholder="Enter a Pokemon name"></TextInput>
+      <View style={Styles.container}>
+        <Text style={{
+          marginTop: 10
+        }}>{this.props.pkmns.length} finded!</Text>
+        <TextInput 
+          style={Styles.input} 
+          onChange={this.inputValueChanged.bind(this)}
+          clearButtonMode='while-editing'
+          keyboardAppearance='dark'
+          placeholder="Enter a Pokemon name"></TextInput>
 
         <SegmentedControlIOS 
           values={['All', 'My favourites']}
-          
+          tintColor='white'
           selectedIndex={0} 
           onChange={(event) => { this.setState({selectedIndex: event.nativeEvent.selectedSegmentIndex}); }} />
       </View>
@@ -45,7 +52,7 @@ const Styles = StyleSheet.create({
     textAlign: 'left',
     color: 'black',
     height: 40, 
-    borderColor: 'black',
+    borderColor: '#9f3f3f',
     borderWidth: 1,
     flex: 0.6,
     padding: 5,
@@ -56,10 +63,10 @@ const Styles = StyleSheet.create({
     marginTop: 65,
     alignSelf: 'stretch',
     backgroundColor: '#eb5d5d',
-    paddingLeft: 15, 
-    paddingRight: 15, 
-    paddingBottom: 5, 
+    paddingLeft: 10, 
+    paddingRight: 10, 
+    paddingBottom: 10, 
     borderBottomWidth: 1, 
-    borderBottomColor: 'black'
+    borderBottomColor: '#9f3f3f'
   }
 });

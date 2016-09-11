@@ -51,6 +51,7 @@ export default class PkmnSprite extends Component {
         <Image
           style={{width: 90, height: 90}}
           source={{uri: this.props.image }}
+          resizeMode='contain'
         />
         <Text style={[styles[this.isFemaleSprite ? 'female' : 'male'], styles.sign]}>{this.sexSign()}</Text>
       </View>

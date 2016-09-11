@@ -31,7 +31,9 @@ export default class PokemonDetails extends Component {
     // this._displayTypes(pkmnDatas.typesString);
     // console.log(this._versionAppareances(pkmnDatas.game_indices))
     return (
-      <ScrollView >
+      <ScrollView
+        contentContainerStyle={{ paddingVertical: 20 }}
+      >
         <Text style={{ 
           fontSize: 20,
           textAlign: 'center' }}>
@@ -40,7 +42,6 @@ export default class PokemonDetails extends Component {
 
         <View style={{
             justifyContent: 'center',
-            alignItems: 'center',
             flexDirection: 'row',
             flex: 1, 
           }}>
@@ -52,7 +53,9 @@ export default class PokemonDetails extends Component {
         <View style={{
           flexDirection: 'row',
           flex: .5,
-                    alignItems: 'center',
+          alignItems: 'center',
+          paddingLeft: 20,
+          paddingRight: 20,
         }}>
           {pkmnDatas.typesString.map((type, index) =>
             <PkmnType name={type} key={index}/>

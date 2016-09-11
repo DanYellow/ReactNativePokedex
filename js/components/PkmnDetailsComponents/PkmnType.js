@@ -6,6 +6,8 @@ import {
 }
 from 'react-native';
 
+import { Utils } from '../../utils'
+
 export default class PkmnType extends Component { 
   constructor(props, context) { 
     super(props, context); 
@@ -17,12 +19,26 @@ export default class PkmnType extends Component {
         flex: .5,
         alignSelf: 'center',
       }}>
-        <Text style={[styles[this.props.name], styles.typeName]}>
+        <Text style={foo(this.props.name)}>
           {this.props.name}
         </Text>
       </View>
     ) 
   } 
+}
+
+var foo = function(type) {
+  return {
+    fontSize: 20,
+    textAlign: 'center',
+    color: 'white',
+    paddingTop: 3,
+    paddingBottom: 3,
+    paddingLeft: 5,
+    paddingRight: 5,
+    borderRadius: 5,
+    backgroundColor: Utils.typeColor(type)
+  }
 }
 
 

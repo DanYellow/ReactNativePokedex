@@ -8,14 +8,7 @@ import React, { Component } from 'react';
 import {
   AppRegistry,
   StyleSheet,
-  Text,
-  View,
-  Image,
-  TextInput,
-  ScrollView,
   NavigatorIOS,
-  Navigator,
-  TouchableHighlight
 } from 'react-native';
 
 import { Provider } from 'react-redux';
@@ -24,7 +17,7 @@ import thunkMiddleware from 'redux-thunk';
 
 
 import PokedexContainer from './js/PokedexContainer';
-// import Pokedex from './js/containers/Pokedex';
+
 import reducer from './js/reducers'
 
 var store    = createStore(
