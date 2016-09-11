@@ -23,19 +23,20 @@ const filterPkmns = (pkmns, filter = '') => {
         return pkmn.datas.id == searchValue;
       });
     } else {
-      if (searchValue.indexOf('type') > -1) {
-        typeSearch = searchValue.split(':')[1] || "null"
-        return pkmns.filter(function(pkmn) {
-          return pkmn.datas.typesString.indexOf(typeSearch) > -1;
-        })
-      } else {
-        return pkmns.filter(function(pkmn) {
-          return pkmn.datas.name.toLowerCase().indexOf(searchValue) > -1;
-        });
+      switch (true) {
+        case (searchValue.indexOf('type') > -1):
+          typeSearch = searchValue.split(':')[1] || "null"
+          return pkmns.filter(function(pkmn) {
+            return pkmn.datas.typesString.indexOf(typeSearch) > -1;
+          })
+          break;
+        default:
+          return pkmns.filter(function(pkmn) {
+            return pkmn.datas.name.toLowerCase().indexOf(searchValue) > -1;
+          });
+          break;
       }
-      
     }
-    
   }
 }
 

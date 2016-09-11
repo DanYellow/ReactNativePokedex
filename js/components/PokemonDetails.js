@@ -47,15 +47,13 @@ export default class PokemonDetails extends Component {
           }}>
             <PkmnSprite image={pkmnDatas.sprites.front_default} />
             <PkmnSprite image={pkmnDatas.sprites.front_female} />
-        
-          
         </View> 
         <View style={{
           flexDirection: 'row',
           flex: .5,
           alignItems: 'center',
-          paddingLeft: 20,
-          paddingRight: 20,
+          paddingLeft: 50,
+          paddingRight: 50,
         }}>
           {pkmnDatas.typesString.map((type, index) =>
             <PkmnType name={type} key={index}/>

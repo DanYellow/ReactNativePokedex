@@ -19,15 +19,15 @@ export default class PkmnType extends Component {
         flex: .5,
         alignSelf: 'center',
       }}>
-        <Text style={foo(this.props.name)}>
-          {this.props.name}
+        <Text style={typeNameStyle(this.props.name)}>
+          {this.props.name.capitalizeFirstLetter()}
         </Text>
       </View>
     ) 
   } 
 }
 
-var foo = function(type) {
+var typeNameStyle = function(type) {
   return {
     fontSize: 20,
     textAlign: 'center',

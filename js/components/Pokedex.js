@@ -40,6 +40,7 @@ export default class Pokedex extends Component {
     this.props.navigator.push({
       title: pkmnDatas.name.capitalizeFirstLetter(),
       component: PokemonDetails,
+      // rightButtonIcon: require('image!NavBarButtonPlus'),
       passProps: {
         pkmn: pkmnDatas
       }
