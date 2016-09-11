@@ -24,6 +24,7 @@ import thunkMiddleware from 'redux-thunk';
 
 
 import PokedexContainer from './js/PokedexContainer';
+// import Pokedex from './js/containers/Pokedex';
 import reducer from './js/reducers'
 
 var store    = createStore(
@@ -41,13 +42,11 @@ class ReactNativePokedex extends Component {
           initialRoute={{
             title: "Pokédex",
             component: PokedexContainer,
-            passProps: { title: 'foo' },
-            titleTextColor: 'red'
           }}
           tintColor="#008888"
-          style={{flex: 1, borderBottomColor: 'red', borderBottomWidth: 4}}
+          style={{flex: 1}}
           barTintColor='#fff'
-          />
+        />
       </Provider>
     );
   }

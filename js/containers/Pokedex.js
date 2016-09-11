@@ -35,7 +35,7 @@ function mapStateToProps(state) {
 
 // Crée alias de dispatch
 function mapDispatchToProps(dispatch) {
-  return fetchPkmn
+  return fetchPkmn;
 }
 
 var PokedexContainer = connect(mapStateToProps)(Pokedex)

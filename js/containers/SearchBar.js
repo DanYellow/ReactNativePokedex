@@ -5,7 +5,8 @@ import SearchBar from '../components/SearchBar'
 
 function mapStateToProps(state) {
   return {
-    text: state.search.text
+    text: state.search.text,
+    pkmns: state.pkmns
   }
 }
 

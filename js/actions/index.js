@@ -1,4 +1,4 @@
-export const searchPkmn = function (text) {
+export const filterPkmns = function (text) {
   return {
     type: 'FILTER_PKMN',
     text

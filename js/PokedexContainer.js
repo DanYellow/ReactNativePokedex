@@ -17,9 +17,9 @@ export default class PokedexContainer extends Component {
 
   render() {
     return (
-      <View>
+      <View style={{flex: 1}}>
         <SearchBar />
-        <Pokedex />
+        <Pokedex style={{flex: 1}}/>
       </View>
   )}
 }

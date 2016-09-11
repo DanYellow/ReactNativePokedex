@@ -22,32 +22,48 @@ export default class Pokedex extends Component {
   }
 
   componentWillMount() {
-    for (var i = 1; i < 60; i++) {
+    for (var i = 1; i < 30; i++) {
       this.props.dispatch(fetchPkmn(i));
     }
   }
 
+  _onPressButton(rowID, rowData) {
+    console.log(rowID, rowData)
+  }
+
   _renderRow (rowData, sectionID, rowID) {
     const datas = rowData.datas;
-    console.log(datas.sprites.front_default)
+
     return (
-       <TouchableHighlight underlayColor={'#ccc'}>
+       <TouchableHighlight 
+        underlayColor={'#f00'} 
+        style={styles.collectionItem} 
+        accessibilityLabel={datas.name}
+        onPress={this._onPressButton.bind(rowID, rowData)}>
         <View>
-          <View style={styles.collectionItem}>
             <View style={{
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
               <Image
-                style={{width: 100, height: 100}}
+                style={{width: 75, height: 75}}
                 source={{uri: datas.sprites.front_default }}
               />
             </View>
             <Text style={styles.text}>{datas.name} | #{datas.id}</Text>
-          </View>
         </View>
       </TouchableHighlight>
     )
+  }
+
+  _renderRowT (rowData, sectionID, rowID) {
+    return (
+      <Text>{rowData}</Text>
+    )
+  }
+
+  _contentSizeChanged (contentWidth, contentHeight) {
+    console.log(contentWidth, contentHeight)
   }
 
   render() {
@@ -55,8 +71,15 @@ export default class Pokedex extends Component {
       return (
         <ListView
           contentContainerStyle={styles.collection}
+          style={styles.listView} 
           dataSource={this.ds.cloneWithRows(this.props.pkmns)}
-          renderRow={this._renderRow}
+          initialListSize={1}
+          keyboardDismissMode='on-drag'
+          // renderRow={this._renderRowT}
+          renderRow={this._renderRow.bind(this)}
+          showsVerticalScrollIndicator={true}
+          automaticallyAdjustContentInsets={false}
+          onContentSizeChange={this._contentSizeChanged}
         />
       )
     } else {
@@ -71,18 +94,22 @@ const styles = StyleSheet.create({
   collection: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    height: height
+    // height: 500
   },
   collectionItem: {
-    backgroundColor: '#F9F9F9',
+    // backgroundColor: '#F9F9F9',
     margin: 3,
     width: (width / 3.20),
-    height: 100,
+    height: (width / 3.20),
     justifyContent: 'center',
     alignItems: 'center',
   },
   text: {
     textAlign: 'center'
+  },
+  listView: {
+    flex:1,
+    flexDirection: 'column',
   }
 });
 

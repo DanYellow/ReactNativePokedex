@@ -8,7 +8,7 @@ import {
    } 
 from 'react-native';
 
-import { searchPkmn } from '../actions'
+import { filterPkmns } from '../actions'
 
 export default class SearchBar extends Component { 
   constructor(props, context) { 
@@ -16,14 +16,14 @@ export default class SearchBar extends Component {
   }
 
   inputValueChanged (event) {
-    this.props.dispatch(searchPkmn(event.nativeEvent.text));
+    this.props.dispatch(filterPkmns(event.nativeEvent.text));
   }
 
-  render() { 
+  render() {
     return ( 
       <View style={Styles.inputContainer}>
         <TextInput style={Styles.input} onChange={this.inputValueChanged.bind(this)}></TextInput>
-        <Text>{this.props.text}</Text>
+        <Text>Results : {this.props.pkmns.length}</Text>
       </View>
     ) 
   } 
@@ -40,16 +40,16 @@ const Styles = StyleSheet.create({
     height: 40, 
     borderColor: 'black',
     borderWidth: 1,
-    width: width,
-    paddingLeft: 5,
-    paddingRight: 5
+    flex: 0.6,
+    padding: 5,
+    marginBottom: 10,
+    backgroundColor: '#FFF'
   },
   inputContainer: {
-    justifyContent: 'center',
     padding: 0,
-    marginTop: 70,
-    width: width,
-    alignItems: 'center',
-    borderColor: '#CCC'
+    marginTop: 65,
+    alignSelf: 'stretch',
+    backgroundColor: '#F00',
+    padding: 5,
   }
 });
