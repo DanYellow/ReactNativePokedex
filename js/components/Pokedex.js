@@ -6,7 +6,9 @@ import {
   Text,
   View,
   Dimensions,
-  Image
+  Image,
+  ActivityIndicator,
+  Alert
 } from 'react-native';
 
 import * as Helpers from '../utils'
@@ -23,6 +25,10 @@ export default class Pokedex extends Component {
   constructor(props) {
     super(props);
     this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    this.lastIndexDex = 14;
+    this.maxIndexDex = 721;
+    // Debug mode | Work with only one datas
+    this.activateInfiniteScroll = false;
   }
 
   setNativeProps(nativeProps) { 
@@ -30,13 +36,18 @@ export default class Pokedex extends Component {
   }
 
   componentWillMount() {
-    for (var i = 1; i < 14; i++) {
+    for (var i = 1; i < this.lastIndexDex; i++) {
       this.props.dispatch(fetchPkmn(i));
     }
   }
 
   _onPressPkmn(rowID, rowData) {
     const pkmnDatas = rowData.datas;
+
+    if (pkmnDatas.hasOwnProperty('detail')) {
+      Alert.alert( 'Error', 'Too many requests', [ {text: 'OK', onPress: () => console.log('OK Pressed!')}, ] )
+      return;
+    }
 
     this.props.navigator.push({
       title: pkmnDatas.name.capitalizeFirstLetter(),
@@ -65,10 +76,15 @@ export default class Pokedex extends Component {
   }
 
   onEndReached (arg) {
-    console.log("hello")
-    for (var i = 15; i < 20; i++) {
+    if (this.lastIndexDex >= this.maxIndexDex) {
+      return;
+    }
+    // dispatch(allPkmnFinishRendering(false))
+    for (var i = this.lastIndexDex + 1; i < this.lastIndexDex + 5; i++) {
       this.props.dispatch(fetchPkmn(i));
     }
+    this.lastIndexDex += 5;
+    
   }
 
   _renderRowT (rowData, sectionID, rowID) {
@@ -77,21 +93,28 @@ export default class Pokedex extends Component {
     )
   }
 
+  renderFooter () {
+      return this.props.isFinishLoaded ? <ActivityIndicator 
+            animating={true}
+            style={[styles.fetchLoader, {height: 80}]} size="large" /> : null
+    }
+
   render() {
     if (this.props.pkmns.length) {
       return (
         <ListView
-          contentContainerStyle={styles.collection}
-          style={styles.listView} 
-          dataSource={this.ds.cloneWithRows(this.props.pkmns)}
-          initialListSize={1}
-          keyboardDismissMode='on-drag'
-          // renderRow={this._renderRowT}
-          renderRow={this._renderRow.bind(this)}
-          showsVerticalScrollIndicator={true}
-          automaticallyAdjustContentInsets={false}
-          onEndReached={this.onEndReached.bind(this)}
-        />
+            contentContainerStyle={styles.collection}
+            style={styles.listView} 
+            dataSource={this.ds.cloneWithRows(this.props.pkmns)}
+            initialListSize={this.lastIndexDex}
+            keyboardDismissMode='on-drag'
+            // renderRow={this._renderRowT}
+            renderRow={this._renderRow.bind(this)}
+            showsVerticalScrollIndicator={true}
+            automaticallyAdjustContentInsets={false}
+            onEndReached={this.onEndReached.bind(this)}
+            // renderHeader={this.renderFooter.bind(this)}
+          />
       )
     } else {
       if (this.props.search) {
@@ -141,11 +164,20 @@ const styles = StyleSheet.create({
   listView: {
     flex:1,
     flexDirection: 'column',
-    backgroundColor: '#f1f1f1'
+    backgroundColor: '#fff'
   },
   loader: {
     flex: 1,
-    alignItems: 'center'
+    alignItems: 'center',
+    marginTop: 15,
+  },
+  fetchLoader: { 
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    padding: 8,
+    position: 'absolute',
+    backgroundColor: 'transparent',
+    zIndex: 10
   }
 });
 

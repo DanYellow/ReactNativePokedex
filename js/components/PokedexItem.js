@@ -23,18 +23,28 @@ export default class PokedexItem extends Component {
 
   render() {
     const datas = this.props.datas;
+
+    var pkmnThumb = null;
+    if (datas.sprites) {
+      pkmnThumb = <Image style={{width: 75, height: 75}} source={{uri: datas.sprites.front_default }} />
+    }
+
+    var pkmnName = "NO NAME";
+    if (datas.name) {
+      pkmnName = datas.name;
+    }
+
     return ( 
       <View ref={component => this._root = component} {...this.props} >
         <View style={{
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <Image
-            style={{width: 75, height: 75}}
-            source={{uri: datas.sprites.front_default }}
-          />
+          { pkmnThumb }
+          
+          
         </View>
-        <Text style={styles.text}>{datas.name.capitalizeFirstLetter()}</Text>
+        <Text style={styles.text}>{pkmnName.capitalizeFirstLetter()}</Text>
       </View>
     ) 
   } 

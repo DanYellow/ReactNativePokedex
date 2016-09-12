@@ -21,5 +21,6 @@ https://rnplay.org/apps/JwYO8g
 https://github.com/sghiassy/react-native-sglistview
 https://github.com/react-native-community/react-native-linear-gradient
 
+https://medium.com/the-react-native-log/understanding-react-native-flexbox-layout-7a528200afd4#.qx46cnqp6
 
 https://facebook.github.io/react-native/docs/images.html

@@ -36,11 +36,21 @@ var pkmn = function (state = {}, action) {
   }
 }
 
+var fetchStatus = function (state = false, action) {
+  switch (action.type) {
+    case 'ALL_PKMN_RENDERED':
+      return action;
+    default:
+      return state;
+  }
+} 
+
 
 var reducers = combineReducers({
   pkmns,
   search,
-  pkmn
+  pkmn,
+  fetchStatus
 })
 
 export default reducers;
