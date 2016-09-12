@@ -8,7 +8,7 @@ from 'react-native';
 
 import { Utils } from '../../utils'
 
-export default class PkmnType extends Component { 
+export default class PkmnMeasurement extends Component { 
   constructor(props, context) { 
     super(props, context); 
   }
@@ -16,8 +16,9 @@ export default class PkmnType extends Component {
   render() {
     return (
       <View>
-        <Text style={typeNameStyle(this.props.name)}>
-          {this.props.name.capitalizeFirstLetter()}
+        <Text>
+          Height: {this.props.height} ft | { Utils.unitConvertion( {'value': this.props.height, 'unit': 'length'} ) } cm {"\n"}
+          Weight: {this.props.weight} lbs | { Utils.unitConvertion( {'value': this.props.weight, 'unit': 'weight'} ) } kg
         </Text>
       </View>
     ) 

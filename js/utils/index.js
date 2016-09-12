@@ -67,6 +67,22 @@ export class Utils {
     }
     return color;
   }
+
+  static unitConvertion(obj) {
+    var val = 42;
+    switch (obj.unit) {
+      case 'weight':
+        val = obj.value * 0.453592;
+        break;
+      case 'length':
+        val = obj.value * 30,48;
+        break;
+      default:
+        val = 42;
+        break;
+    }
+    return val.toFixed(2);
+  }
 }
 
 String.prototype.capitalizeFirstLetter = function() {

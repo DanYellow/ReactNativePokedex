@@ -40,13 +40,11 @@ export default class PkmnSprite extends Component {
     }
 
     return (
-      <View>
       <View style={{
-          flex: 1, 
-          flexDirection: 'column',
-          justifyContent: 'center',
+          flexDirection:'column', 
           alignItems: 'center',
-          marginBottom: 15,
+          justifyContent: 'flex-start',
+          flex: 0.5
         }}>
         <Image
           style={{width: 90, height: 90}}
@@ -54,7 +52,6 @@ export default class PkmnSprite extends Component {
           resizeMode='contain'
         />
         <Text style={[styles[this.isFemaleSprite ? 'female' : 'male'], styles.sign]}>{this.sexSign()}</Text>
-      </View>
       </View>
     ) 
   } 
@@ -66,6 +63,7 @@ const styles = StyleSheet.create({
     fontSize: 35,
     textAlign: 'center',
     fontWeight: 'bold',
+
   },
   male: {
     color: '#35f'

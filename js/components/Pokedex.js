@@ -30,19 +30,21 @@ export default class Pokedex extends Component {
   }
 
   componentWillMount() {
-    for (var i = 1; i < 43; i++) {
+    for (var i = 1; i < 14; i++) {
       this.props.dispatch(fetchPkmn(i));
     }
   }
 
-  _onPressButton(rowID, rowData) {
+  _onPressPkmn(rowID, rowData) {
     const pkmnDatas = rowData.datas;
+
     this.props.navigator.push({
       title: pkmnDatas.name.capitalizeFirstLetter(),
       component: PokemonDetails,
-      // rightButtonIcon: require('image!NavBarButtonPlus'),
+      rightButtonIcon: require('image!no-favorite'),
       passProps: {
-        pkmn: pkmnDatas
+        pkmn: pkmnDatas,
+        navigator: this.props.navigator
       }
     })
   }
@@ -55,11 +57,18 @@ export default class Pokedex extends Component {
         underlayColor={'#ffa7a7'} 
         style={[styles.collectionItem, collectionItemBorder(datas.typesString[0])]} 
         accessibilityLabel={datas.name}
-        onPress={this._onPressButton.bind(this, rowID, rowData)}>
+        onPress={this._onPressPkmn.bind(this, rowID, rowData)}>
           <PokedexItem datas={datas}/>
           
       </TouchableHighlight>
     )
+  }
+
+  onEndReached (arg) {
+    console.log("hello")
+    for (var i = 15; i < 20; i++) {
+      this.props.dispatch(fetchPkmn(i));
+    }
   }
 
   _renderRowT (rowData, sectionID, rowID) {
@@ -81,7 +90,7 @@ export default class Pokedex extends Component {
           renderRow={this._renderRow.bind(this)}
           showsVerticalScrollIndicator={true}
           automaticallyAdjustContentInsets={false}
-          onContentSizeChange={this._contentSizeChanged}
+          onEndReached={this.onEndReached.bind(this)}
         />
       )
     } else {

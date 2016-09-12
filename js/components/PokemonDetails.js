@@ -14,6 +14,8 @@ import _ from 'lodash'
 import PkmnType from './PkmnDetailsComponents/PkmnType'
 import GameVersion from './PkmnDetailsComponents/GameVersion'
 import PkmnSprite from './PkmnDetailsComponents/PkmnSprite'
+import PkmnMeasurement from './PkmnDetailsComponents/PkmnMeasurement'
+import PkmnAbilities from './PkmnDetailsComponents/PkmnAbilities'
 
 
 
@@ -32,33 +34,30 @@ export default class PokemonDetails extends Component {
     // console.log(this._versionAppareances(pkmnDatas.game_indices))
     return (
       <ScrollView
-        contentContainerStyle={{ paddingVertical: 20 }}
-      >
-        <Text style={{ 
-          fontSize: 20,
-          textAlign: 'center' }}>
-            #{pkmnDatas.id}
-        </Text>
-
-        <View style={{
-            justifyContent: 'center',
-            flexDirection: 'row',
-            flex: 1, 
-          }}>
-            <PkmnSprite image={pkmnDatas.sprites.front_default} />
-            <PkmnSprite image={pkmnDatas.sprites.front_female} />
-        </View> 
-        <View style={{
-          flexDirection: 'row',
-          flex: .5,
-          alignItems: 'center',
-          paddingLeft: 50,
-          paddingRight: 50,
+        contentContainerStyle={{ 
+          paddingVertical: 20,
+          paddingHorizontal: 5
         }}>
-          {pkmnDatas.typesString.map((type, index) =>
-            <PkmnType name={type} key={index}/>
-          )}
-        </View>
+          <View style={{flex:1, flexDirection:'row', justifyContent:'flex-start', alignItems: 'flex-start'}}>
+            <View style={{flex:0.25, alignItems: 'center'}}>
+                <PkmnSprite image={ pkmnDatas.sprites.front_default } />
+                <PkmnSprite image={ pkmnDatas.sprites.front_female } />
+            </View>
+
+            <View style={{flex:.5, alignItems: 'flex-start'}}>
+              <Text style={ Styles.pkmnName }>#{ pkmnDatas.id } | { pkmnDatas.name.capitalizeFirstLetter() }</Text>
+
+              <View style={ Styles.typeContainer }>
+                {pkmnDatas.typesString.map((type, index) =>
+                  <PkmnType name={type} key={index}/>
+                )}
+              </View>
+              <PkmnMeasurement {...{weight: pkmnDatas.weight, height: pkmnDatas.height }} />
+              <PkmnAbilities {...{abilities: pkmnDatas.abilities }} />
+            </View>
+
+          </View>
+                    
       </ScrollView>
     ) 
   } 
@@ -68,23 +67,15 @@ var {height, width} = Dimensions.get('window');
 
 
 const Styles = StyleSheet.create({
-  input: {
-    fontSize: 20,
-    textAlign: 'left',
-    color: 'black',
-    height: 40, 
-    borderColor: 'black',
-    borderWidth: 1,
-    flex: 0.6,
-    padding: 5,
+  typeContainer: {
+    flex:0, 
+    alignItems: 'flex-start', 
+    flexDirection:'row',
+    marginTop: 5,
     marginBottom: 10,
-    backgroundColor: '#FFF'
   },
-  inputContainer: {
-    padding: 0,
-    marginTop: 65,
-    alignSelf: 'stretch',
-    backgroundColor: '#F00',
-    padding: 5,
+  pkmnName: {
+    fontSize: 20,
+    fontWeight: 'bold'
   }
 });
