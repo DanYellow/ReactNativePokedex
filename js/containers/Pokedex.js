@@ -20,6 +20,7 @@ const filterPkmns = (pkmns, filter = '') => {
 
     if ((new RegExp(/^\d+$/).test(searchValue))) {
       return pkmns.filter(function(pkmn) {
+        if (!pkmn.datas.id) { return; }
         return pkmn.datas.id == searchValue;
       });
     } else {
@@ -27,11 +28,13 @@ const filterPkmns = (pkmns, filter = '') => {
         case (searchValue.indexOf('type') > -1):
           typeSearch = searchValue.split(':')[1] || "null"
           return pkmns.filter(function(pkmn) {
+            if (!pkmn.datas.typesString) { return; }
             return pkmn.datas.typesString.indexOf(typeSearch) > -1;
           })
           break;
         default:
           return pkmns.filter(function(pkmn) {
+            if (!pkmn.datas.name) { return; }
             return pkmn.datas.name.toLowerCase().indexOf(searchValue) > -1;
           });
           break;
