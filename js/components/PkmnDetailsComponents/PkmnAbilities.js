@@ -16,10 +16,10 @@ export default class PkmnAbilities extends Component {
   render() {
     return (
       <View style={ Styles.abilitiesContainer }>
-        <Text style={{ flex:1, alignItems: 'flex-start', alignSelf: 'flex-start', fontSize: 18, alignSelf:'stretch' }}>Abilities</Text>
+        <Text style={{ alignItems: 'flex-start', fontSize: 18, paddingBottom: 9, }}>Abilities</Text>
         <View style={ Styles.abilities }>
           {this.props.abilities.map((ability, index) =>
-            <Text key={index} style={{ paddingBottom: 14, backgroundColor: 'transparent' }}>{ ability.ability.name.capitalizeFirstLetter() }</Text>
+            <Text key={index} style={{ paddingBottom: 1, backgroundColor: 'transparent' }}>{ ability.ability.name.capitalizeFirstLetter() }</Text>
           )}
         </View>
       </View>

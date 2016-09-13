@@ -72,10 +72,10 @@ export class Utils {
     var val = 42;
     switch (obj.unit) {
       case 'weight':
-        val = obj.value * 0.453592;
+        val = obj.value * (1/0.453592);
         break;
       case 'length':
-        val = obj.value * 30,48;
+        val = obj.value * (1/30.48) * 100;
         break;
       default:
         val = 42;

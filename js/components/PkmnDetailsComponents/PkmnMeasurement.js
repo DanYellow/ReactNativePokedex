@@ -14,11 +14,14 @@ export default class PkmnMeasurement extends Component {
   }
 
   render() {
+    const height = (this.props.height * .1).toFixed(2);
+    const weight = (this.props.weight * .1).toFixed(2);
+
     return (
       <View>
         <Text>
-          Height: {this.props.height} ft | { Utils.unitConvertion( {'value': this.props.height, 'unit': 'length'} ) } cm {"\n"}
-          Weight: {this.props.weight} lbs | { Utils.unitConvertion( {'value': this.props.weight, 'unit': 'weight'} ) } kg
+          Height: { height } m | { Utils.unitConvertion( {'value': height, 'unit': 'length'} ) } ft {"\n"}
+          Weight: { weight } kg | { Utils.unitConvertion( {'value': weight, 'unit': 'weight'} ) } lbs
         </Text>
       </View>
     ) 

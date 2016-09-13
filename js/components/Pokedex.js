@@ -124,8 +124,8 @@ export default class Pokedex extends Component {
             showsVerticalScrollIndicator={true}
             automaticallyAdjustContentInsets={false}
             onEndReached={this.onEndReached.bind(this)}
-            scrollRenderAheadDistance={20}
-            // stickyHeaderIndices={[]}
+            scrollRenderAheadDistance={0}
+            // stickyHeaderIndices={}
             // onEndReachedThreshold={1}
             // renderHeader={this.renderFooter.bind(this)}
           />

@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 
 import SearchBar from '../components/SearchBar'
 
+import _ from 'lodash'
+
 function mapStateToProps(state) {
   return {
     text: state.search.text,

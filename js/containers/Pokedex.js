@@ -9,6 +9,12 @@ import Pokedex from '../components/Pokedex'
 var searchValue = '';
 var typeSearch = ''
 
+/**
+ * Filter pkmn datas
+ * @param  {Array<Object>} pkmns  List of Pokemon retrieve from API
+ * @param  {String} filter Value to test for filter
+ * @return {Array<Object>}        Filtered datas
+ */
 const filterPkmns = (pkmns, filter = '') => {
   pkmns = _.map(pkmns, getArrayTypes);
   pkmns = _.map(pkmns, getVersionsAppareance);
@@ -19,12 +25,14 @@ const filterPkmns = (pkmns, filter = '') => {
     searchValue = filter.toLowerCase()
 
     if ((new RegExp(/^\d+$/).test(searchValue))) {
+      // Search by id
       return pkmns.filter(function(pkmn) {
         if (!pkmn.datas.id) { return; }
         return pkmn.datas.id == searchValue;
       });
     } else {
       switch (true) {
+        // Search by type
         case (searchValue.indexOf('type') > -1):
           typeSearch = searchValue.split(':')[1] || "null"
           return pkmns.filter(function(pkmn) {
@@ -33,6 +41,7 @@ const filterPkmns = (pkmns, filter = '') => {
           })
           break;
         default:
+          // Search by name
           return pkmns.filter(function(pkmn) {
             if (!pkmn.datas.name) { return; }
             return pkmn.datas.name.toLowerCase().indexOf(searchValue) > -1;
