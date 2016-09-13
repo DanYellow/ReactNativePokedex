@@ -41,8 +41,6 @@ export default class PokedexItem extends Component {
             alignItems: 'center',
           }}>
           { pkmnThumb }
-          
-          
         </View>
         <Text style={styles.text}>{pkmnName.capitalizeFirstLetter()}</Text>
       </View>

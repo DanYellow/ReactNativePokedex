@@ -11,7 +11,9 @@ import {
   Alert
 } from 'react-native';
 
-import * as Helpers from '../utils'
+
+import SGListView from 'react-native-sglistview';
+import * as Helpers from '../utils';
 
 import PokedexItem from './PokedexItem'
 import PokemonDetails from './PokemonDetails'
@@ -24,11 +26,12 @@ import { fetchPkmn } from '../actions'
 export default class Pokedex extends Component { 
   constructor(props) {
     super(props);
-    this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id });
+
     this.lastIndexDex = 14;
     this.maxIndexDex = 721;
     // Debug mode | Work with only one datas
-    this.activateInfiniteScroll = false;
+    this.activateInfiniteScroll = true;
   }
 
   setNativeProps(nativeProps) { 
@@ -68,15 +71,15 @@ export default class Pokedex extends Component {
         underlayColor={'#ffa7a7'} 
         style={[styles.collectionItem, collectionItemBorder(datas.typesString[0])]} 
         accessibilityLabel={datas.name}
-        onPress={this._onPressPkmn.bind(this, rowID, rowData)}>
+        onPress={this._onPressPkmn.bind(this, rowID, rowData)}
+        >
           <PokedexItem datas={datas}/>
-          
       </TouchableHighlight>
     )
   }
 
   onEndReached (arg) {
-    if (this.lastIndexDex >= this.maxIndexDex) {
+    if (this.lastIndexDex >= this.maxIndexDex || this.activateInfiniteScroll == false) {
       return;
     }
     // dispatch(allPkmnFinishRendering(false))
@@ -87,9 +90,15 @@ export default class Pokedex extends Component {
     
   }
 
-  _renderRowT (rowData, sectionID, rowID) {
+  _renderRowDebug (rowData, sectionID, rowID) {
     return (
-      <Text>{rowData}</Text>
+       <TouchableHighlight 
+        underlayColor={'#ffa7a7'} 
+        style={[styles.collectionItem]} 
+        >
+          <PokedexItem datas={{name: String(rowData.id)}} />
+      </TouchableHighlight>
+      
     )
   }
 
@@ -108,11 +117,16 @@ export default class Pokedex extends Component {
             dataSource={this.ds.cloneWithRows(this.props.pkmns)}
             initialListSize={this.lastIndexDex}
             keyboardDismissMode='on-drag'
-            // renderRow={this._renderRowT}
+            pageSize={3}
+            removeClippedSubviews={true} 
+            // renderRow={this._renderRowDebug}
             renderRow={this._renderRow.bind(this)}
             showsVerticalScrollIndicator={true}
             automaticallyAdjustContentInsets={false}
             onEndReached={this.onEndReached.bind(this)}
+            scrollRenderAheadDistance={20}
+            // stickyHeaderIndices={[]}
+            // onEndReachedThreshold={1}
             // renderHeader={this.renderFooter.bind(this)}
           />
       )

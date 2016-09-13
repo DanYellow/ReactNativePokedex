@@ -25,7 +25,7 @@ export default class SearchBar extends Component {
       <View style={Styles.container}>
         <Text style={{
           marginTop: 10
-        }}>{this.props.pkmns.length} founded!</Text>
+        }}>{/*this.props.pkmns.length*/} founded!</Text>
         <TextInput 
           style={Styles.input} 
           onChange={this.inputValueChanged.bind(this)}

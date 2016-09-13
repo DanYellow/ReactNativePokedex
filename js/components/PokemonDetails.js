@@ -17,7 +17,7 @@ import PkmnSprite from './PkmnDetailsComponents/PkmnSprite'
 import PkmnMeasurement from './PkmnDetailsComponents/PkmnMeasurement'
 import PkmnAbilities from './PkmnDetailsComponents/PkmnAbilities'
 
-
+import * as Helpers from '../utils'
 
 export default class PokemonDetails extends Component { 
   constructor(props, context) { 
@@ -35,10 +35,12 @@ export default class PokemonDetails extends Component {
     return (
       <ScrollView
         contentContainerStyle={{ 
-          paddingVertical: 20,
-          paddingHorizontal: 5
+          paddingVertical: 20
         }}>
-          <View style={{flex:1, flexDirection:'row', justifyContent:'flex-start', alignItems: 'flex-start'}}>
+          <View style={{flex:1, flexDirection:'row', 
+            justifyContent:'flex-start', alignItems: 'flex-start', 
+            borderBottomColor: Helpers.Utils.typeColor(pkmnDatas.typesString[0]), borderBottomWidth: 1,
+            paddingBottom: 15 }}>
             <View style={{flex:0.25, alignItems: 'center'}}>
                 <PkmnSprite image={ pkmnDatas.sprites.front_default } />
                 <PkmnSprite image={ pkmnDatas.sprites.front_female } />

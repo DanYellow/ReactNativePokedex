@@ -34,7 +34,7 @@ export const allPkmnFinishRendering = function (isAllRendered) {
 
 export const fetchPkmn = function (idDex) {
   return dispatch => {
-    return fetch(`http://pokeapi.co/api/v2/pokemon/${idDex}/`, { 'cache': 'force-cache' })
+    return fetch(`http://pokeapi.co/api/v2/pokemon/${idDex}/`, { 'cache': 'reload' }) // 'force-cache'
       .then(response => response.json())
       .then(function(json) {
         // _.debounce(_debounceRendering, 0);

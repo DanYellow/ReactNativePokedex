@@ -69,6 +69,7 @@ const getVersionsAppareance = (pkmn) => {
 function mapStateToProps(state) {
   return {
     pkmns: _.sortBy(filterPkmns(state.pkmns, state.search.text), function(o) { return o.id; }),
+    // pkmns: state.pkmns,
     search: state.search.text,
     isFinishLoaded: state.fetchStatus.isAllRendered
   }
