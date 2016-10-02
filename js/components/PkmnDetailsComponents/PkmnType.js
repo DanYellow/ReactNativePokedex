@@ -15,8 +15,8 @@ export default class PkmnType extends Component {
 
   render() {
     return (
-      <View>
-        <Text style={typeNameStyle(this.props.name)}>
+      <View style={typeNameStyle(this.props.name)}>
+        <Text style={styles.typeName}>
           {this.props.name.capitalizeFirstLetter()}
         </Text>
       </View>
@@ -26,14 +26,13 @@ export default class PkmnType extends Component {
 
 var typeNameStyle = function(type) {
   return {
-    fontSize: 20,
-    textAlign: 'center',
-    color: 'white',
     paddingTop: 3,
     paddingBottom: 3,
     paddingLeft: 5,
     paddingRight: 5,
-    backgroundColor: Utils.typeColor(type)
+    backgroundColor: Utils.typeColor(type),
+    borderRadius: 5,
+    marginRight: 5
   }
 }
 
@@ -42,11 +41,6 @@ const styles = StyleSheet.create({
   typeName: {
     fontSize: 20,
     textAlign: 'center',
-    color: 'white',
-    paddingTop: 3,
-    paddingBottom: 3,
-    paddingLeft: 5,
-    paddingRight: 5,
-    borderRadius: 5
+    color: 'white'
   }
 });

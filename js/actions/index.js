@@ -25,7 +25,7 @@ export const detailsPkmn = function (datas) {
   }
 }
 
-const isFinishLoadingDebounce = _.debounce(isFinishLoading, 1000, { 'trailling': true, 'leading': false });
+const isFinishLoadingDebounce = _.debounce(isFinishLoading, 3500, { 'trailling': true, 'leading': true });
 
 export const fetchPkmn = function (idDex) {
   return dispatch => {

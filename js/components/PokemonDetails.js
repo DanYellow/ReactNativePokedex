@@ -5,8 +5,9 @@ import {
   StyleSheet,
   Dimensions,
   ScrollView,
-  Image
-   } 
+  Image,
+  NativeModules
+} 
 from 'react-native';
 
 import _ from 'lodash'
@@ -16,6 +17,8 @@ import GameVersion from './PkmnDetailsComponents/GameVersion'
 import PkmnSprite from './PkmnDetailsComponents/PkmnSprite'
 import PkmnMeasurement from './PkmnDetailsComponents/PkmnMeasurement'
 import PkmnAbilities from './PkmnDetailsComponents/PkmnAbilities'
+
+import Player from './custom-components/Player'
 
 import * as Helpers from '../utils'
 
@@ -28,9 +31,19 @@ export default class PokemonDetails extends Component {
     return _.map(datas, 'version.name');
   }
 
+  componentDidMount() {
+    // let CalendarManager = NativeModules.PlaySound;
+
+    // CalendarManager.playSongForStringURL("");
+  }
+
   render() {
     const pkmnDatas = this.props.pkmn;
 
+    // return (
+    //   <Player />
+    // )
+    const pkmnCryURL = `http://danyellow.ilotreseau.net/pokedex/${pkmnDatas.id}.mp3`;
     return (
       <ScrollView
         contentContainerStyle={{ 
@@ -45,8 +58,11 @@ export default class PokemonDetails extends Component {
                 <PkmnSprite image={ pkmnDatas.sprites.front_default } imageShiny={ pkmnDatas.sprites.front_shiny } />
                 <PkmnSprite image={ pkmnDatas.sprites.front_female } imageShiny={ pkmnDatas.sprites.front_shiny_female } />
             </View>
+            <Player soundPath={ pkmnCryURL } style={{ alignItems: 'center', alignSelf: 'stretch', backgroundColor: 'transparent', height: 100 }}>
+              {/*<Text style={{ fontSize: 23, padding: 90 }}>Appears in </Text> */}
+            </Player>
 
-            <View style={{ alignItems: 'center', alignSelf: 'stretch', }}>
+            <View style={{ alignItems: 'center', alignSelf: 'stretch' }}>
               <Text style={ Styles.pkmnName }>#{ pkmnDatas.id } | { pkmnDatas.name.capitalizeFirstLetter() }</Text>
               <View style={ Styles.typeContainer }>
                 {pkmnDatas.typesString.map((type, index) =>
@@ -58,15 +74,16 @@ export default class PokemonDetails extends Component {
                 <PkmnAbilities style={{ flexDirection: .5 }} {...{abilities: pkmnDatas.abilities }} />
               </View>
             </View>
+
           </View>
 
-            <Text style={{ fontSize: 23, padding: 9 }}>Appears in </Text>
-            <View style={Styles.gameCoversContainer}>
-              {pkmnDatas.game_indices.map((data, index) =>
-                <GameVersion name={data.version.name} key={Date.now() + index}/>
-              )}
-            </View>
-          
+          <Text style={{ fontSize: 23, padding: 9 }}>Appears in </Text>
+          <View style={Styles.gameCoversContainer}>
+            {pkmnDatas.game_indices.map((data, index) =>
+              <GameVersion name={data.version.name} key={Date.now() + index}/>
+            )}
+          </View>
+            
                     
       </ScrollView>
     ) 

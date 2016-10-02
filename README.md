@@ -17,3 +17,6 @@ https://github.com/happypoulp/redux-tutorial
 
 
 https://gist.github.com/christopherdro/89bc57a19ff02f061954
+https://github.com/facebook/react-native/issues/499#issuecomment-87821298
+
+https://github.com/facebook/css-layout

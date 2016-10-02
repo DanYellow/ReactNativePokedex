@@ -16,6 +16,7 @@ import * as Helpers from '../utils';
 
 import PokedexItem from './PokedexItem'
 import PokemonDetails from './PokemonDetails'
+import LoaderPokedexItems from './LoaderPokedexItems'
 
 var {height, width} = Dimensions.get('window');
 
@@ -89,7 +90,6 @@ export default class Pokedex extends Component {
   }
 
   onEndReached () {
-    return; 
     if (this.lastIndexDex >= this.maxIndexDex || this.activateInfiniteScroll == false) {
       return;
     }
@@ -113,12 +113,6 @@ export default class Pokedex extends Component {
     )
   }
 
-  renderFooter () {
-      return this.props.isFinishLoaded ? <ActivityIndicator 
-            animating={true}
-            style={[styles.fetchLoader, {height: 80}]} size="large" /> : null
-    }
-
   render() {
     let pkmnsSrc = this.props.pkmns;
     let { searchTerm, filteredPkmns, favoritesPkmn, segmentedControlIndex } = this.props;
@@ -130,7 +124,7 @@ export default class Pokedex extends Component {
     }
 
     if (false && this.props.isLoading) {
-      // return this._renderLoading()
+      // return this._renderLoading();
       return null;
     } else if (filteredPkmns.length > 0 && !this.props.isLoading) {
       return this._renderPokedex(pkmnsSrc);
@@ -150,7 +144,7 @@ export default class Pokedex extends Component {
     )
   }
 
-  _renderLoading () {
+  _renderLoader () {
     return (
       <View style={styles.loader}>
         <Image source={require('../img/pokedex-loader.gif')} />
@@ -160,23 +154,33 @@ export default class Pokedex extends Component {
   }
 
   _renderPokedex(datas) {
+    let loader = null;
+    if (this.props.isLoading) {
+      loader = <View style={styles.loader} >
+          <LoaderPokedexItems />
+        </View>
+    }
+
     return (
-      <ListView
-          contentContainerStyle={styles.collection}
-          style={styles.collectionView} 
-          dataSource={this.ds.cloneWithRows(datas)}
-          initialListSize={this.lastIndexDex}
-          keyboardDismissMode='on-drag'
-          pageSize={3}
-          removeClippedSubviews={true} 
-          // renderRow={this._renderRowDebug}
-          renderRow={this._renderRow.bind(this)}
-          showsVerticalScrollIndicator={true}
-          automaticallyAdjustContentInsets={false}
-          onEndReached={this.onEndReached.bind(this)}
-          scrollRenderAheadDistance={0}
-          enableEmptySections={true}
-        />
+      <View style={{flex: 1}}>
+        <ListView
+            contentContainerStyle={styles.collection}
+            style={styles.collectionView} 
+            dataSource={this.ds.cloneWithRows(datas)}
+            initialListSize={this.lastIndexDex}
+            keyboardDismissMode='on-drag'
+            pageSize={3}
+            removeClippedSubviews={true} 
+            // renderRow={this._renderRowDebug}
+            renderRow={this._renderRow.bind(this)}
+            showsVerticalScrollIndicator={true}
+            automaticallyAdjustContentInsets={false}
+            onEndReached={this.onEndReached.bind(this)}
+            scrollRenderAheadDistance={0}
+            enableEmptySections={true}
+          />
+        { loader }
+      </View>
     )
   }
 }
@@ -211,9 +215,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff'
   },
   loader: {
-    flex: 1,
-    alignItems: 'center',
-    marginTop: 15,
+    
+
   },
   fetchLoader: { 
     alignItems: 'center', 
@@ -222,6 +225,13 @@ const styles = StyleSheet.create({
     position: 'absolute',
     backgroundColor: 'transparent',
     zIndex: 10
+  },
+  loader: {
+    position: 'absolute',
+    bottom: 10,
+    marginTop: 15,
+    left: 0,
+    right: 0
   }
 });
 
