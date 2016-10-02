@@ -12,7 +12,6 @@ import {
 } from 'react-native';
 
 
-import SGListView from 'react-native-sglistview';
 import * as Helpers from '../utils';
 
 import PokedexItem from './PokedexItem'
@@ -28,7 +27,7 @@ export default class Pokedex extends Component {
     super(props);
     this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id });
 
-    this.lastIndexDex = 14;
+    this.lastIndexDex = 4;
     this.maxIndexDex = 721;
     // Debug mode | Work with only one datas
     this.activateInfiniteScroll = true;
@@ -40,7 +39,7 @@ export default class Pokedex extends Component {
 
   componentWillMount() {
     for (var i = 1; i < this.lastIndexDex; i++) {
-      this.props.dispatch(fetchPkmn(i));
+      this.props.fetchPkmn(i);
     }
   }
 
@@ -52,13 +51,24 @@ export default class Pokedex extends Component {
       return;
     }
 
+    var icon = (this.props.favoritesPkmnIndex.indexOf(pkmnDatas.id) > -1) ? require('image!favorite') : require('image!no-favorite');
+
     this.props.navigator.push({
       title: pkmnDatas.name.capitalizeFirstLetter(),
       component: PokemonDetails,
-      rightButtonIcon: require('image!no-favorite'),
+      rightButtonIcon: icon,
       passProps: {
         pkmn: pkmnDatas,
         navigator: this.props.navigator
+      },
+      onRightButtonPress: () => {
+        this.props.toggleFavoritePkmn(pkmnDatas.id)
+        
+        // try {
+        //   await AsyncStorage.setItem('@MySuperStore:key', 'I like to save it.');
+        // } catch (error) {
+        //   // Error saving data
+        // }
       }
     })
   }
@@ -78,13 +88,14 @@ export default class Pokedex extends Component {
     )
   }
 
-  onEndReached (arg) {
+  onEndReached () {
+    return; 
     if (this.lastIndexDex >= this.maxIndexDex || this.activateInfiniteScroll == false) {
       return;
     }
-    // dispatch(allPkmnFinishRendering(false))
-    for (var i = this.lastIndexDex + 1; i < this.lastIndexDex + 5; i++) {
-      this.props.dispatch(fetchPkmn(i));
+
+    for (var i = this.lastIndexDex; i < this.lastIndexDex + 5; i++) {
+      this.props.fetchPkmn(i);
     }
     this.lastIndexDex += 5;
     
@@ -109,45 +120,64 @@ export default class Pokedex extends Component {
     }
 
   render() {
-    if (this.props.pkmns.length) {
-      return (
-        <ListView
-            contentContainerStyle={styles.collection}
-            style={styles.listView} 
-            dataSource={this.ds.cloneWithRows(this.props.pkmns)}
-            initialListSize={this.lastIndexDex}
-            keyboardDismissMode='on-drag'
-            pageSize={3}
-            removeClippedSubviews={true} 
-            // renderRow={this._renderRowDebug}
-            renderRow={this._renderRow.bind(this)}
-            showsVerticalScrollIndicator={true}
-            automaticallyAdjustContentInsets={false}
-            onEndReached={this.onEndReached.bind(this)}
-            scrollRenderAheadDistance={0}
-            // stickyHeaderIndices={}
-            // onEndReachedThreshold={1}
-            // renderHeader={this.renderFooter.bind(this)}
-          />
-      )
-    } else {
-      if (this.props.search) {
-        return (
-          <View style={styles.loader}>
-            <Image source={require('../img/pokdex-no-results.gif')} />
-            <Text>No results</Text>
-          </View>
-        )
-      } else {
-        return (
-          <View style={styles.loader}>
-            <Image source={require('../img/pokedex-loader.gif')} />
-            <Text>Loading</Text>
-          </View>
-        )
-      }
-      
+    let pkmnsSrc = this.props.pkmns;
+    let { searchTerm, filteredPkmns, favoritesPkmn, segmentedControlIndex } = this.props;
+
+    if (filteredPkmns.length > -1 && searchTerm !== '') {
+      pkmnsSrc = this.props.filteredPkmns;
+    } else if (favoritesPkmn.length > -1 && segmentedControlIndex == 1) {
+      pkmnsSrc = this.props.favoritesPkmn;
     }
+
+    if (false && this.props.isLoading) {
+      // return this._renderLoading()
+      return null;
+    } else if (filteredPkmns.length > 0 && !this.props.isLoading) {
+      return this._renderPokedex(pkmnsSrc);
+    } else if (filteredPkmns.length == 0 && searchTerm !== '') {
+      return this._renderNoResultScreen();
+    } else {
+      return this._renderPokedex(pkmnsSrc);
+    }
+  }
+
+  _renderNoResultScreen () {
+    return (
+      <View style={styles.loader}>
+        <Image source={require('../img/pokdex-no-results.gif')} />
+        <Text>No results</Text>
+      </View>
+    )
+  }
+
+  _renderLoading () {
+    return (
+      <View style={styles.loader}>
+        <Image source={require('../img/pokedex-loader.gif')} />
+        <Text>Loading...</Text>
+      </View>
+    )
+  }
+
+  _renderPokedex(datas) {
+    return (
+      <ListView
+          contentContainerStyle={styles.collection}
+          style={styles.collectionView} 
+          dataSource={this.ds.cloneWithRows(datas)}
+          initialListSize={this.lastIndexDex}
+          keyboardDismissMode='on-drag'
+          pageSize={3}
+          removeClippedSubviews={true} 
+          // renderRow={this._renderRowDebug}
+          renderRow={this._renderRow.bind(this)}
+          showsVerticalScrollIndicator={true}
+          automaticallyAdjustContentInsets={false}
+          onEndReached={this.onEndReached.bind(this)}
+          scrollRenderAheadDistance={0}
+          enableEmptySections={true}
+        />
+    )
   }
 }
 
@@ -175,7 +205,7 @@ const styles = StyleSheet.create({
   text: {
     textAlign: 'center'
   },
-  listView: {
+  collectionView: {
     flex:1,
     flexDirection: 'column',
     backgroundColor: '#fff'

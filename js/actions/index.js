@@ -1,8 +1,10 @@
 import _ from 'lodash'
+import * as ActionTypes from '../constants/ActionTypes'
 
-export const filterPkmns = function (text) {
+
+export const searchPkmn = function (text) {
   return {
-    type: 'FILTER_PKMN',
+    type: ActionTypes.FILTER_PKMN,
     text
   }
 }
@@ -10,8 +12,7 @@ export const filterPkmns = function (text) {
 
 export const receivePkmn = function (id, json) {
   return {
-    type: 'FETCH_PKMN',
-    id: id,
+    type: ActionTypes.FETCH_PKMN,
     id,
     datas: json
   }
@@ -19,32 +20,49 @@ export const receivePkmn = function (id, json) {
 
 export const detailsPkmn = function (datas) {
   return {
-    type: 'DETAILS_PKMN',
-    datas: datas
+    type: ActionTypes.DETAILS_PKMN,
+    datas
   }
 }
 
-export const allPkmnFinishRendering = function (isAllRendered) {
-  return {
-    type: 'ALL_PKMN_RENDERED',
-    isAllRendered
-  }
-}
-
+const isFinishLoadingDebounce = _.debounce(isFinishLoading, 1000, { 'trailling': true, 'leading': false });
 
 export const fetchPkmn = function (idDex) {
   return dispatch => {
-    return fetch(`http://pokeapi.co/api/v2/pokemon/${idDex}/`, { 'cache': 'reload' }) // 'force-cache'
+    dispatch({ type: ActionTypes.LOADING_PKMN });
+    
+    return fetch(`http://pokeapi.co/api/v2/pokemon/${idDex}/`, { 'cache': 'force-cache' })
       .then(response => response.json())
       .then(function(json) {
-        // _.debounce(_debounceRendering, 0);
-        // _debounceRendering(dispatch)
+        isFinishLoadingDebounce();
         return dispatch(receivePkmn(idDex, json))
-      }).catch((error) => { console.error(error); })
+      })
+  }
+}
+
+function isFinishLoading() {
+  return dispatch => {
+    dispatch({ type: ActionTypes.ENDLOADING_PKMN });
+  }
+}
+
+export const loadingPkmn = function (isLoading) {
+  return {
+    type: ActionTypes.LOADING_PKMN
+  }
+}
+
+export const toggleFavoritePkmn = function (id) {
+  return {
+    type: ActionTypes.TOGGLE_FAVORITE_PKMN,
+    id
   }
 }
 
 
-const _debounceRendering = function (dispatch) {
-  dispatch(allPkmnFinishRendering(true))
+export const filterFavoritesPkmn = (id) => {
+  return {
+    type: ActionTypes.CHANGE_SEGCONTROL_PKMN,
+    id
+  }
 }

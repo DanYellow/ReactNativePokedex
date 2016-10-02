@@ -9,7 +9,7 @@ import {
 }
 from 'react-native';
 
-import { filterPkmns } from '../actions'
+import { searchPkmn } from '../actions'
 
 export default class SearchBar extends Component { 
   constructor(props, context) { 
@@ -17,7 +17,13 @@ export default class SearchBar extends Component {
   }
 
   inputValueChanged (event) {
-    this.props.dispatch(filterPkmns(event.nativeEvent.text));
+    this.props.searchPkmn(event.nativeEvent.text);
+  }
+
+  segmentedControlChanged (event) {
+    // this.setState({selectedIndex: event.nativeEvent.selectedSegmentIndex})
+  
+    this.props.filterFavoritesPkmn(event.nativeEvent.selectedSegmentIndex);
   }
 
   render() {
@@ -25,7 +31,7 @@ export default class SearchBar extends Component {
       <View style={Styles.container}>
         <Text style={{
           marginTop: 10
-        }}>{this.props.pkmns.length} founded!</Text>
+        }}>{ (this.props.filteredPkmns.length || this.props.searchTerm !== '') || this.props.pkmns.length } Pokemon founded!</Text>
         <TextInput 
           style={Styles.input} 
           onChange={this.inputValueChanged.bind(this)}
@@ -37,7 +43,7 @@ export default class SearchBar extends Component {
           values={['All', 'My favourites']}
           tintColor='white'
           selectedIndex={0} 
-          onChange={(event) => { this.setState({selectedIndex: event.nativeEvent.selectedSegmentIndex}); }} />
+          onChange={(event) => this.segmentedControlChanged(event) } />
       </View>
     ) 
   } 

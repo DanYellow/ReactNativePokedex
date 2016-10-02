@@ -1,90 +1,42 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import _ from 'lodash'
 
-
+import { fetchPkmn, loadingPkmn, toggleFavoritePkmn } from '../actions'
 import Pokedex from '../components/Pokedex'
-
-var searchValue = '';
-var typeSearch = ''
-
-/**
- * Filter pkmn datas
- * @param  {Array<Object>} pkmns  List of Pokemon retrieve from API
- * @param  {String} filter Value to test for filter
- * @return {Array<Object>}        Filtered datas
- */
-const filterPkmns = (pkmns, filter = '') => {
-  pkmns = _.map(pkmns, getArrayTypes);
-  pkmns = _.map(pkmns, getVersionsAppareance);
-  
-  if (filter.trim() == "") {
-    return pkmns;
-  } else {
-    searchValue = filter.toLowerCase()
-
-    if ((new RegExp(/^\d+$/).test(searchValue))) {
-      // Search by id
-      return pkmns.filter(function(pkmn) {
-        if (!pkmn.datas.id) { return; }
-        return pkmn.datas.id == searchValue;
-      });
-    } else {
-      switch (true) {
-        // Search by type
-        case (searchValue.indexOf('type') > -1):
-          typeSearch = searchValue.split(':')[1] || "null"
-          return pkmns.filter(function(pkmn) {
-            if (!pkmn.datas.typesString) { return; }
-            return pkmn.datas.typesString.indexOf(typeSearch) > -1;
-          })
-          break;
-        default:
-          // Search by name
-          return pkmns.filter(function(pkmn) {
-            if (!pkmn.datas.name) { return; }
-            return pkmn.datas.name.toLowerCase().indexOf(searchValue) > -1;
-          });
-          break;
-      }
-    }
-  }
-}
+import { getFilteredPokemon, getFavoritesPkmn } from '../selectors/'
 
 
-/**
- * Retrieve in a string array of current Pokemon type
- * @param  {Object} pkmn A Pokemon datas
- * @return {Array<String>} List of current Pokemon type
- */
-const getArrayTypes = (pkmn) => {
-  pkmn.datas.typesString = _.reverse(_.map(pkmn.datas.types, 'type.name'));
 
-  return pkmn;
-}
-
-/**
- * Retrieve in a string array of every Pokemon game where the current Pokemon appears
- * @param  {Object} pkmn A Pokemon datas
- * @return {Array<String>} List of every Pokemon game
- */
-const getVersionsAppareance = (pkmn) => {
-  pkmn.datas.games = _.reverse(_.map(pkmn.datas.game_indices, 'version.name'));
-
-  return pkmn;
-}
 
 function mapStateToProps(state) {
   return {
-    pkmns: _.sortBy(filterPkmns(state.pkmns, state.search.text), function(o) { return o.id; }),
-    // pkmns: state.pkmns,
-    search: state.search.text,
-    isFinishLoaded: state.fetchStatus.isAllRendered
+    pkmns: state.pkmns,
+    filteredPkmns: getFilteredPokemon(state),
+    favoritesPkmn: getFavoritesPkmn(state),
+    favoritesPkmnIndex: state.favoritesPkmnIndex,
+    
+    searchTerm: state.search,
+    isLoading: state.isLoadingPkmn,
+    segmentedControlIndex: state.segmentedControlIndex
+  }
+}
+
+// Crée alias de dispatch
+function mapDispatchToProps(dispatch) {
+  return {
+    fetchPkmn,
+    loadingPkmn,
+    toggleFavoritePkmn
   }
 }
 
 
-var PokedexContainer = connect(mapStateToProps)(Pokedex)
+
+
+var PokedexContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps()
+)(Pokedex)
 
 export default PokedexContainer

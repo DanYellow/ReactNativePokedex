@@ -25,40 +25,48 @@ export default class PokemonDetails extends Component {
   }
 
   _versionAppareances (datas) {
-    return _.map(datas, 'version.name')
+    return _.map(datas, 'version.name');
   }
 
   render() {
     const pkmnDatas = this.props.pkmn;
-    // this._displayTypes(pkmnDatas.typesString);
-    // console.log(this._versionAppareances(pkmnDatas.game_indices))
+
     return (
       <ScrollView
         contentContainerStyle={{ 
-          paddingVertical: 20
+          paddingVertical: 20,
+          paddingHorizontal: 5
         }}>
-          <View style={{flex:1, flexDirection:'row', 
-            justifyContent:'flex-start', alignItems: 'flex-start', 
+          <View style={{flexDirection:'column', 
+            justifyContent:'flex-start', alignItems: 'center', 
             borderBottomColor: Helpers.Utils.typeColor(pkmnDatas.typesString[0]), borderBottomWidth: 1,
-            paddingBottom: 15 }}>
-            <View style={{flex:0.25, alignItems: 'center'}}>
-                <PkmnSprite image={ pkmnDatas.sprites.front_default } />
-                <PkmnSprite image={ pkmnDatas.sprites.front_female } />
+            paddingBottom: 15, alignSelf: 'stretch' }}>
+            <View style={{flex:1, alignItems: 'center', flexDirection:'row'}}>
+                <PkmnSprite image={ pkmnDatas.sprites.front_default } imageShiny={ pkmnDatas.sprites.front_shiny } />
+                <PkmnSprite image={ pkmnDatas.sprites.front_female } imageShiny={ pkmnDatas.sprites.front_shiny_female } />
             </View>
 
-            <View style={{flex:.5, alignItems: 'flex-start'}}>
+            <View style={{ alignItems: 'center', alignSelf: 'stretch', }}>
               <Text style={ Styles.pkmnName }>#{ pkmnDatas.id } | { pkmnDatas.name.capitalizeFirstLetter() }</Text>
-
               <View style={ Styles.typeContainer }>
                 {pkmnDatas.typesString.map((type, index) =>
-                  <PkmnType name={type} key={index}/>
+                  <PkmnType name={type} key={Date.now() + index}/>
                 )}
               </View>
-              <PkmnMeasurement {...{weight: pkmnDatas.weight, height: pkmnDatas.height }} />
-              <PkmnAbilities {...{abilities: pkmnDatas.abilities }} />
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent:'space-around', alignSelf: 'stretch' }}>
+                <PkmnMeasurement style={{ flex: .5 }} {...{weight: pkmnDatas.weight, height: pkmnDatas.height }} />
+                <PkmnAbilities style={{ flexDirection: .5 }} {...{abilities: pkmnDatas.abilities }} />
+              </View>
             </View>
-
           </View>
+
+            <Text style={{ fontSize: 23, padding: 9 }}>Appears in </Text>
+            <View style={Styles.gameCoversContainer}>
+              {pkmnDatas.game_indices.map((data, index) =>
+                <GameVersion name={data.version.name} key={Date.now() + index}/>
+              )}
+            </View>
+          
                     
       </ScrollView>
     ) 
@@ -79,5 +87,12 @@ const Styles = StyleSheet.create({
   pkmnName: {
     fontSize: 20,
     fontWeight: 'bold'
+  },
+  gameCoversContainer: {
+    flexDirection:'row', 
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around'
   }
 });

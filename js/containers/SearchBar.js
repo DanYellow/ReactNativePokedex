@@ -2,16 +2,24 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import SearchBar from '../components/SearchBar'
+import { searchPkmn, filterFavoritesPkmn } from '../actions'
+import { getFilteredPokemon } from '../selectors'
 
-import _ from 'lodash'
 
 function mapStateToProps(state) {
   return {
-    text: state.search.text,
-    pkmns: state.pkmns
+    pkmns: state.pkmns,
+    filteredPkmns: getFilteredPokemon(state),
+    searchTerm: state.search
   }
 }
 
-var SearchBarContainer = connect(mapStateToProps)(SearchBar)
+const mapDispatchToProps = {
+  searchPkmn,
+  filterFavoritesPkmn
+}
+
+
+var SearchBarContainer = connect(mapStateToProps, mapDispatchToProps)(SearchBar)
 
 export default SearchBarContainer

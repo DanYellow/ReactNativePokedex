@@ -6,7 +6,9 @@ import {
 }
 from 'react-native';
 
-import { Utils } from '../../utils'
+// import uuid from 'node-uuid';
+
+import { Utils } from '../../utils';
 
 export default class PkmnAbilities extends Component { 
   constructor(props, context) { 
@@ -19,14 +21,14 @@ export default class PkmnAbilities extends Component {
         <Text style={{ alignItems: 'flex-start', fontSize: 18, paddingBottom: 9, }}>Abilities</Text>
         <View style={ Styles.abilities }>
           {this.props.abilities.map((ability, index) =>
-            <Text key={index} style={{ paddingBottom: 1, backgroundColor: 'transparent' }}>{ ability.ability.name.capitalizeFirstLetter() }</Text>
+            <Text key={index}  style={{ paddingBottom: 1, backgroundColor: 'transparent' }}>{ ability.ability.name.capitalizeFirstLetter() }</Text>
           )}
         </View>
       </View>
     ) 
   } 
 }
-
+// key={uuid.v1()} 
 const Styles = StyleSheet.create({
   abilitiesContainer: {
     marginTop: 10,

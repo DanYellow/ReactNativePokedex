@@ -3,7 +3,8 @@ import {
   View, 
   Text, 
   StyleSheet,
-  Image
+  Image,
+  TouchableWithoutFeedback
 }
 from 'react-native';
 
@@ -11,7 +12,10 @@ export default class PkmnSprite extends Component {
   constructor(props, context) { 
     super(props, context);
 
-    this.isFemaleSprite = this._isFemaleSprite(this.props.image)
+    this.isFemaleSprite = this._isFemaleSprite(this.props.image);
+    this.state = {
+      displayShinySprite: false
+    }
   }
 
   sexSign () {
@@ -34,24 +38,42 @@ export default class PkmnSprite extends Component {
     }
   }
 
+  _onPressSprite () {
+    this.setState({ displayShinySprite: !this.state.displayShinySprite })
+  }
+
   render() {
     if (!this.props.image) {
       return null;
     }
 
+    let spriteComponent = <Image
+          style={{width: 90, height: 90}}
+          source={{uri: this.props.image }}
+        />
+    if (this.state.displayShinySprite) {
+      spriteComponent = <Image
+          style={{width: 90, height: 90}}
+          source={{uri: this.props.imageShiny }}
+        />
+    }
+
     return (
+      <TouchableWithoutFeedback
+        onPress={this._onPressSprite.bind(this)}
+      >
       <View style={{
           flexDirection:'column', 
           alignItems: 'center',
           justifyContent: 'flex-start',
           flex: 0.5
         }}>
-        <Image
-          style={{width: 90, height: 90}}
-          source={{uri: this.props.image }}
-        />
+
+        { spriteComponent }
+        
         <Text style={[styles[this.isFemaleSprite ? 'female' : 'male'], styles.sign]}>{this.sexSign()}</Text>
       </View>
+      </TouchableWithoutFeedback>
     ) 
   } 
 }

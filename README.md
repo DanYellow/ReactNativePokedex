@@ -11,16 +11,9 @@ https://github.com/happypoulp/redux-tutorial
 
 ## Start project
 
-react-native run-ios
-react-native log-ios
+- git clone
+- npm install
+- react-native run-ios (Starts Simulator iOS) / react-native log-ios (Start Android Simulator)
 
-# http://www.slideshare.net/tedpennings/how-to-redux
-# https://gist.github.com/christopherdro/89bc57a19ff02f061954
-https://rnplay.org/apps/JwYO8g
 
-https://github.com/sghiassy/react-native-sglistview
-https://github.com/react-native-community/react-native-linear-gradient
-
-https://medium.com/the-react-native-log/understanding-react-native-flexbox-layout-7a528200afd4#.qx46cnqp6
-
-https://facebook.github.io/react-native/docs/images.html
+https://gist.github.com/christopherdro/89bc57a19ff02f061954

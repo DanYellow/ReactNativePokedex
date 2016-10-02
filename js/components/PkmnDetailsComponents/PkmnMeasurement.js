@@ -19,6 +19,7 @@ export default class PkmnMeasurement extends Component {
 
     return (
       <View>
+        <Text style={{ alignItems: 'flex-start', fontSize: 18, paddingBottom: 9, }}>Measurement</Text>
         <Text>
           Height: { height } m | { Utils.unitConvertion( {'value': height, 'unit': 'length'} ) } ft {"\n"}
           Weight: { weight } kg | { Utils.unitConvertion( {'value': weight, 'unit': 'weight'} ) } lbs
