@@ -60,7 +60,7 @@
 
 - (void) songPlaying {
   NSLog(@"%f %f", audioPlayer.duration, audioPlayer.currentTime);
-}
+} 
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag {
   [audioPlayerTimer invalidate];

@@ -22,7 +22,7 @@ function mapStateToProps(state) {
   }
 }
 
-// Crée alias de dispatch
+// Create a dispatch alias for its component class
 function mapDispatchToProps(dispatch) {
   return {
     fetchPkmn,
@@ -30,8 +30,6 @@ function mapDispatchToProps(dispatch) {
     toggleFavoritePkmn
   }
 }
-
-
 
 
 var PokedexContainer = connect(

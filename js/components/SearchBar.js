@@ -20,9 +20,7 @@ export default class SearchBar extends Component {
     this.props.searchPkmn(event.nativeEvent.text);
   }
 
-  segmentedControlChanged (event) {
-    // this.setState({selectedIndex: event.nativeEvent.selectedSegmentIndex})
-  
+  segmentedControlChanged (event) {  
     this.props.filterFavoritesPkmn(event.nativeEvent.selectedSegmentIndex);
   }
 

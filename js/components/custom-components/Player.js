@@ -10,7 +10,7 @@ class Player extends React.Component {
   } 
 }
 
- Player.propTypes = {
+Player.propTypes = {
   alpha: React.PropTypes.number,
   soundPath: React.PropTypes.string
 };

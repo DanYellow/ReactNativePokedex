@@ -6,7 +6,8 @@ import {
   Dimensions,
   ScrollView,
   Image,
-  NativeModules
+  NativeModules,
+  TouchableHighlight
 } 
 from 'react-native';
 
@@ -23,69 +24,66 @@ import Player from './custom-components/Player'
 import * as Helpers from '../utils'
 
 export default class PokemonDetails extends Component { 
-  constructor(props, context) { 
-    super(props, context); 
-  }
-
-  _versionAppareances (datas) {
-    return _.map(datas, 'version.name');
-  }
-
-  componentDidMount() {
-    // let CalendarManager = NativeModules.PlaySound;
-
-    // CalendarManager.playSongForStringURL("");
+  _onPressButton () {
+    this.props.toggleFavoritePkmn(this.props.pkmn.id);
   }
 
   render() {
     const pkmnDatas = this.props.pkmn;
 
-    // return (
-    //   <Player />
-    // )
+    <Player />
+
     const pkmnCryURL = `http://danyellow.ilotreseau.net/pokedex/${pkmnDatas.id}.mp3`;
     return (
-      <ScrollView
-        contentContainerStyle={{ 
-          paddingVertical: 20,
-          paddingHorizontal: 5
-        }}>
-          <View style={{flexDirection:'column', 
-            justifyContent:'flex-start', alignItems: 'center', 
-            borderBottomColor: Helpers.Utils.typeColor(pkmnDatas.typesString[0]), borderBottomWidth: 1,
-            paddingBottom: 15, alignSelf: 'stretch' }}>
-            <View style={{flex:1, alignItems: 'center', flexDirection:'row'}}>
-                <PkmnSprite image={ pkmnDatas.sprites.front_default } imageShiny={ pkmnDatas.sprites.front_shiny } />
-                <PkmnSprite image={ pkmnDatas.sprites.front_female } imageShiny={ pkmnDatas.sprites.front_shiny_female } />
-            </View>
-            <Player soundPath={ pkmnCryURL } style={{ alignItems: 'center', alignSelf: 'stretch', backgroundColor: 'transparent', height: 100 }}>
-              {/*<Text style={{ fontSize: 23, padding: 90 }}>Appears in </Text> */}
-            </Player>
-
-            <View style={{ alignItems: 'center', alignSelf: 'stretch' }}>
-              <Text style={ Styles.pkmnName }>#{ pkmnDatas.id } | { pkmnDatas.name.capitalizeFirstLetter() }</Text>
-              <View style={ Styles.typeContainer }>
-                {pkmnDatas.typesString.map((type, index) =>
-                  <PkmnType name={type} key={Date.now() + index}/>
-                )}
+      <View style={{flex: 1}}>
+        <ScrollView
+          contentContainerStyle={{ 
+            paddingVertical: 20,
+            paddingHorizontal: 5
+          }}>
+            <View style={{flexDirection:'column', 
+              justifyContent:'flex-start', alignItems: 'center', 
+              borderBottomColor: Helpers.Utils.typeColor(pkmnDatas.typesString[0]), borderBottomWidth: 1,
+              paddingBottom: 15, alignSelf: 'stretch' }}>
+              <View style={{flex:1, alignItems: 'center', flexDirection:'row'}}>
+                  <PkmnSprite image={ pkmnDatas.sprites.front_default } imageShiny={ pkmnDatas.sprites.front_shiny } />
+                  <PkmnSprite image={ pkmnDatas.sprites.front_female } imageShiny={ pkmnDatas.sprites.front_shiny_female } />
               </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent:'space-around', alignSelf: 'stretch' }}>
-                <PkmnMeasurement style={{ flex: .5 }} {...{weight: pkmnDatas.weight, height: pkmnDatas.height }} />
-                <PkmnAbilities style={{ flexDirection: .5 }} {...{abilities: pkmnDatas.abilities }} />
+              <Player soundPath={ pkmnCryURL } style={{ alignItems: 'center', alignSelf: 'stretch', backgroundColor: 'transparent', height: 100 }}>
+                {/*<Text style={{ fontSize: 23, padding: 90 }}>Appears in </Text> */}
+              </Player>
+
+              <View style={{ alignItems: 'center', alignSelf: 'stretch' }}>
+                <Text style={ Styles.pkmnName }>#{ pkmnDatas.id } | { pkmnDatas.name.capitalizeFirstLetter() }</Text>
+                <View style={ Styles.typeContainer }>
+                  {pkmnDatas.typesString.map((type, index) =>
+                    <PkmnType name={type} key={Date.now() + index}/>
+                  )}
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent:'space-around', alignSelf: 'stretch' }}>
+                  <PkmnMeasurement style={{ flex: .5 }} {...{weight: pkmnDatas.weight, height: pkmnDatas.height }} />
+                  <PkmnAbilities style={{ flexDirection: .5 }} {...{abilities: pkmnDatas.abilities }} />
+                </View>
               </View>
+
             </View>
-
-          </View>
-
-          <Text style={{ fontSize: 23, padding: 9 }}>Appears in </Text>
-          <View style={Styles.gameCoversContainer}>
-            {pkmnDatas.game_indices.map((data, index) =>
-              <GameVersion name={data.version.name} key={Date.now() + index}/>
-            )}
-          </View>
             
-                    
-      </ScrollView>
+
+            <Text style={{ fontSize: 23, padding: 9 }}>Appears in </Text>
+            <View style={Styles.gameCoversContainer}>
+              {pkmnDatas.game_indices.map((data, index) =>
+                <GameVersion name={data.version.name} key={Date.now() + index}/>
+              )}
+            </View>
+        </ScrollView>
+        <TouchableHighlight onPress={() => this._onPressButton()}>
+          <View style={ Styles.btnFavContainer }>
+            <Text style={ Styles.btnFav }>
+              Ajouter aux favoris
+            </Text>
+          </View>
+        </TouchableHighlight>
+      </View>
     ) 
   } 
 }
@@ -103,13 +101,24 @@ const Styles = StyleSheet.create({
   },
   pkmnName: {
     fontSize: 20,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   gameCoversContainer: {
     flexDirection:'row', 
     alignItems: 'center',
     justifyContent: 'flex-start',
     flexWrap: 'wrap',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
+  },
+  btnFavContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 50,
+    backgroundColor: 'white',
+  },
+  btnFav: {
+    
+    textAlign: 'center',
+    
   }
 });

@@ -15,7 +15,8 @@ import {
 import * as Helpers from '../utils';
 
 import PokedexItem from './PokedexItem'
-import PokemonDetails from './PokemonDetails'
+import PokemonDetails from './../containers/PokemonDetails'
+// import PokemonDetails from './PokemonDetails'
 import LoaderPokedexItems from './LoaderPokedexItems'
 
 var {height, width} = Dimensions.get('window');
@@ -28,7 +29,7 @@ export default class Pokedex extends Component {
     super(props);
     this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id });
 
-    this.lastIndexDex = 4;
+    this.lastIndexDex = 20;
     this.maxIndexDex = 721;
     // Debug mode | Work with only one datas
     this.activateInfiniteScroll = true;
@@ -57,19 +58,10 @@ export default class Pokedex extends Component {
     this.props.navigator.push({
       title: pkmnDatas.name.capitalizeFirstLetter(),
       component: PokemonDetails,
-      rightButtonIcon: icon,
+      
       passProps: {
         pkmn: pkmnDatas,
         navigator: this.props.navigator
-      },
-      onRightButtonPress: () => {
-        this.props.toggleFavoritePkmn(pkmnDatas.id)
-        
-        // try {
-        //   await AsyncStorage.setItem('@MySuperStore:key', 'I like to save it.');
-        // } catch (error) {
-        //   // Error saving data
-        // }
       }
     })
   }
@@ -90,6 +82,7 @@ export default class Pokedex extends Component {
   }
 
   onEndReached () {
+    return;
     if (this.lastIndexDex >= this.maxIndexDex || this.activateInfiniteScroll == false) {
       return;
     }
@@ -137,7 +130,7 @@ export default class Pokedex extends Component {
 
   _renderNoResultScreen () {
     return (
-      <View style={styles.loader}>
+      <View style={styles.notFound}>
         <Image source={require('../img/pokdex-no-results.gif')} />
         <Text>No results</Text>
       </View>
@@ -195,28 +188,32 @@ const styles = StyleSheet.create({
   collection: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+    justifyContent: 'flex-start',
     paddingVertical: 20,
     paddingHorizontal: 1,
+    alignItems: 'flex-start',
+    alignSelf: 'stretch'
+  },
+  collectionView: {
+    flex:1,
+    flexDirection: 'column',
+    backgroundColor: '#fff',
   },
   collectionItem: {
     margin: 3,
     width: (width / 3.20),
     height: (width / 3.20),
     justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 0.5
+    borderWidth: 0.5,
+
   },
   text: {
     textAlign: 'center'
   },
-  collectionView: {
-    flex:1,
-    flexDirection: 'column',
-    backgroundColor: '#fff'
-  },
-  loader: {
-    
-
+  notFound: {
+    alignItems: 'center',
+    alignSelf: 'stretch',
+    padding: 15
   },
   fetchLoader: { 
     alignItems: 'center', 
