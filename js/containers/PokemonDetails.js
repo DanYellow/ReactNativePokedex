@@ -8,9 +8,11 @@ import PokemonDetails from '../components/PokemonDetails'
 
 
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
+  // console.warn("re", JSON.stringify(Object.keys(state.pkmn)))
   return {
-    pkmns: state.pkmns,
+    pkmnExtras: state.pkmn, //{...state.pkmn.datas, ...ownProps.pkmn},
+    navigator: ownProps.navigator
   }
 }
 
@@ -23,7 +25,7 @@ function mapDispatchToProps(dispatch) {
 
 
 var PokemonDetailsContainer = connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps()
 )(PokemonDetails)
 

@@ -12,27 +12,30 @@ import {
 from 'react-native';
 
 import _ from 'lodash'
+import uuid from 'react-native-uuid'
 
 import PkmnType from './PkmnDetailsComponents/PkmnType'
 import GameVersion from './PkmnDetailsComponents/GameVersion'
 import PkmnSprite from './PkmnDetailsComponents/PkmnSprite'
 import PkmnMeasurement from './PkmnDetailsComponents/PkmnMeasurement'
 import PkmnAbilities from './PkmnDetailsComponents/PkmnAbilities'
+import PkmnTableTypes from './PkmnDetailsComponents/PkmnTableTypes'
+
+import BtnFav from './../containers/BtnFav'
 
 import Player from './custom-components/Player'
 
 import * as Helpers from '../utils'
 
-export default class PokemonDetails extends Component { 
-  _onPressButton () {
-    this.props.toggleFavoritePkmn(this.props.pkmn.id);
+export default class PokemonDetails extends Component {
+  constructor(props) {
+    super(props);
   }
 
   render() {
     const pkmnDatas = this.props.pkmn;
 
     <Player />
-
     const pkmnCryURL = `http://danyellow.ilotreseau.net/pokedex/${pkmnDatas.id}.mp3`;
     return (
       <View style={{flex: 1}}>
@@ -44,7 +47,7 @@ export default class PokemonDetails extends Component {
             <View style={{flexDirection:'column', 
               justifyContent:'flex-start', alignItems: 'center', 
               borderBottomColor: Helpers.Utils.typeColor(pkmnDatas.typesString[0]), borderBottomWidth: 1,
-              paddingBottom: 15, alignSelf: 'stretch' }}>
+              paddingBottom: 15, alignSelf: 'stretch', marginBottom: 7 }}>
               <View style={{flex:1, alignItems: 'center', flexDirection:'row'}}>
                   <PkmnSprite image={ pkmnDatas.sprites.front_default } imageShiny={ pkmnDatas.sprites.front_shiny } />
                   <PkmnSprite image={ pkmnDatas.sprites.front_female } imageShiny={ pkmnDatas.sprites.front_shiny_female } />
@@ -57,7 +60,7 @@ export default class PokemonDetails extends Component {
                 <Text style={ Styles.pkmnName }>#{ pkmnDatas.id } | { pkmnDatas.name.capitalizeFirstLetter() }</Text>
                 <View style={ Styles.typeContainer }>
                   {pkmnDatas.typesString.map((type, index) =>
-                    <PkmnType name={type} key={Date.now() + index}/>
+                    <PkmnType name={type} key={uuid.v1()}/>
                   )}
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent:'space-around', alignSelf: 'stretch' }}>
@@ -68,21 +71,17 @@ export default class PokemonDetails extends Component {
 
             </View>
             
-
-            <Text style={{ fontSize: 23, padding: 9 }}>Appears in </Text>
+            <Text style={Styles.header}>Type effectiveness</Text>
+            <PkmnTableTypes weaknessAndImmune={Helpers.Utils.getWeaknessAndImmunes(pkmnDatas.typesString.join('/'))} />
+            
+            <Text style={Styles.header}>Appears in </Text>
             <View style={Styles.gameCoversContainer}>
-              {pkmnDatas.game_indices.map((data, index) =>
-                <GameVersion name={data.version.name} key={Date.now() + index}/>
+              {this.props.pkmnExtras.datas.game_indices.map((data, index) =>
+                <GameVersion name={data.version.name} key={uuid.v1()}/>
               )}
             </View>
         </ScrollView>
-        <TouchableHighlight onPress={() => this._onPressButton()}>
-          <View style={ Styles.btnFavContainer }>
-            <Text style={ Styles.btnFav }>
-              Ajouter aux favoris
-            </Text>
-          </View>
-        </TouchableHighlight>
+        <BtnFav pkmnID={pkmnDatas.id} />
       </View>
     ) 
   } 
@@ -110,15 +109,12 @@ const Styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-around',
   },
-  btnFavContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 50,
-    backgroundColor: 'white',
-  },
-  btnFav: {
-    
-    textAlign: 'center',
-    
+  header: {
+    fontSize: 18, 
+    padding: 9,
+    borderWidth: 1,
+    borderColor: '#eb5d5d',
+    backgroundColor: '#eb5d5d',
+    color: 'white'
   }
 });

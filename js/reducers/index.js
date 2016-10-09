@@ -58,7 +58,6 @@ const pkmn = function (state = {}, action) {
         {"version":{"url":"http://pokeapi.co/api/v2/version/22/","name":"y"},"game_index":5},
         ...pkmn.game_indices
       ]
-
       return { datas: pkmn };
     default:
       return state;

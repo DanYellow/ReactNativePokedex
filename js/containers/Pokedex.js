@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 
-import { fetchPkmn, loadingPkmn, toggleFavoritePkmn } from '../actions'
+import { fetchPkmn, loadingPkmn, toggleFavoritePkmn, detailsPkmn } from '../actions'
 import Pokedex from '../components/Pokedex'
 import { getFilteredPokemon, getFavoritesPkmn } from '../selectors/'
 
@@ -27,12 +27,13 @@ function mapDispatchToProps(dispatch) {
   return {
     fetchPkmn,
     loadingPkmn,
-    toggleFavoritePkmn
+    toggleFavoritePkmn,
+    detailsPkmn
   }
 }
 
 
-var PokedexContainer = connect(
+const PokedexContainer = connect(
   mapStateToProps,
   mapDispatchToProps()
 )(Pokedex)

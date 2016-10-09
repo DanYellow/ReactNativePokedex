@@ -137,7 +137,12 @@ export class Utils {
       result[pkmnType] = this._computeMatchup(listTypes[pkmnType], pkmnTypes.split('/').map((type) => listTypes[type]).join('/'));
     }
 
-    return result;
+    let group = [];
+    for (var key in result) {
+      group.push({type: key.capitalizeFirstLetter(), effetiveness: result[key]})
+    }
+
+    return group;
   }
 }
 

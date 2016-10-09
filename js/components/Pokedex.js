@@ -54,7 +54,7 @@ export default class Pokedex extends Component {
     }
 
     var icon = (this.props.favoritesPkmnIndex.indexOf(pkmnDatas.id) > -1) ? require('image!favorite') : require('image!no-favorite');
-
+    this.props.detailsPkmn(pkmnDatas);
     this.props.navigator.push({
       title: pkmnDatas.name.capitalizeFirstLetter(),
       component: PokemonDetails,
