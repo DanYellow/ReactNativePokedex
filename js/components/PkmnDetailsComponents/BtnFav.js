@@ -4,7 +4,6 @@ import {
   Text, 
   StyleSheet,
   TouchableHighlight,
-  AsyncStorage
 }
 from 'react-native';
 
@@ -22,17 +21,9 @@ export default class BtnFav extends Component {
   _onPressButton () {
     this.props.toggleFavoritePkmn(this.props.pkmnID);
     this.setState({isAmongFavorite: !this.state.isAmongFavorite});
-
-    
-
   }
 
   componentWillReceiveProps(nextProps) {
-    // try {
-    //   await AsyncStorage.setItem('favorites_pokemon', nextProps.favoritesPkmn);
-    // } catch (error) {
-    //   // Error saving data
-    // }
   }
 
   render() {

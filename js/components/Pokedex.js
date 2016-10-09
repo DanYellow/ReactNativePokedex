@@ -8,8 +8,7 @@ import {
   Dimensions,
   Image,
   ActivityIndicator,
-  Alert,
-  AsyncStorage
+  Alert
 } from 'react-native';
 
 
@@ -41,38 +40,30 @@ export default class Pokedex extends Component {
   }
 
   componentWillMount() {
-    // try {
-    //   const value = AsyncStorage.getItem('favorites_pokemon');
-    //   if (value !== null){
-    //     // We have data!!
-    //     console.warn(JSON.stringify(value));
-    //   }
-    // } catch (error) {
-    //   // Error retrieving data
-    // }
-
     for (var i = 1; i < this.lastIndexDex; i++) {
       this.props.fetchPkmn(i);
     }
   }
 
   _onPressPkmn(rowID, rowData) {
-    const pkmnDatas = rowData.datas;
+    this.requestAnimationFrame(() => {
+      const pkmnDatas = rowData.datas;
 
-    if (pkmnDatas.hasOwnProperty('detail')) {
-      Alert.alert( 'Error', 'Too many requests', [ {text: 'OK', onPress: () => console.log('OK Pressed!')}, ] )
-      return;
-    }
-
-    this.props.detailsPkmn(pkmnDatas);
-    this.props.navigator.push({
-      title: pkmnDatas.name.capitalizeFirstLetter(),
-      component: PokemonDetails,
-      passProps: {
-        pkmn: pkmnDatas,
-        navigator: this.props.navigator
+      if (pkmnDatas.hasOwnProperty('detail')) {
+        Alert.alert( 'Error', 'Too many requests', [ {text: 'OK', onPress: () => console.log('OK Pressed!')}, ] )
+        return;
       }
-    })
+
+      this.props.detailsPkmn(pkmnDatas);
+      this.props.navigator.push({
+        title: pkmnDatas.name.capitalizeFirstLetter(),
+        component: PokemonDetails,
+        passProps: {
+          pkmn: pkmnDatas,
+          navigator: this.props.navigator
+        }
+      })
+    });
   }
 
   _renderRow (rowData, sectionID, rowID) {
