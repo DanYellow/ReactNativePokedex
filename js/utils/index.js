@@ -17,7 +17,7 @@ export class Utils {
         color = '#f07f2f';
         break;
       case 'water':
-        color = 'blue';
+        color = '#0000ff';
         break;
       case 'normal':
         color = '#a7a777';
@@ -56,13 +56,13 @@ export class Utils {
         color = '#6f5797';
         break;
       case 'dark':
-        color = '#333';
+        color = '#333333';
         break;
       case 'rock':
         color = '#b79f37';
         break;
       default:
-        color = 'black'
+        color = '#000000';
         break;
     }
     return color;

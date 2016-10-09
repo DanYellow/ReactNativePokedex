@@ -53,7 +53,7 @@ export default class PokemonDetails extends Component {
                   <PkmnSprite image={ pkmnDatas.sprites.front_female } imageShiny={ pkmnDatas.sprites.front_shiny_female } />
               </View>
               <Player soundPath={ pkmnCryURL } style={{ alignItems: 'center', alignSelf: 'stretch', backgroundColor: 'transparent', height: 100 }}>
-                {/*<Text style={{ fontSize: 23, padding: 90 }}>Appears in </Text> */}
+                {/*<Text style={{ fontSize: 23, padding: 90 }}>Appears in </Text>*/}
               </Player>
 
               <View style={{ alignItems: 'center', alignSelf: 'stretch' }}>

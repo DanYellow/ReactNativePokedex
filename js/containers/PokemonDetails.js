@@ -5,14 +5,15 @@ import { connect } from 'react-redux'
 import { toggleFavoritePkmn } from '../actions'
 import PokemonDetails from '../components/PokemonDetails'
 
+import { getFilteredPokemon, getFavoritesPkmn } from '../selectors/'
+
 
 
 
 function mapStateToProps(state, ownProps) {
-  // console.warn("re", JSON.stringify(Object.keys(state.pkmn)))
   return {
-    pkmnExtras: state.pkmn, //{...state.pkmn.datas, ...ownProps.pkmn},
-    navigator: ownProps.navigator
+    pkmnExtras: state.pkmn,
+    navigator: ownProps.navigator,
   }
 }
 

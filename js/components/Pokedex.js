@@ -8,7 +8,8 @@ import {
   Dimensions,
   Image,
   ActivityIndicator,
-  Alert
+  Alert,
+  AsyncStorage
 } from 'react-native';
 
 
@@ -40,6 +41,16 @@ export default class Pokedex extends Component {
   }
 
   componentWillMount() {
+    // try {
+    //   const value = AsyncStorage.getItem('favorites_pokemon');
+    //   if (value !== null){
+    //     // We have data!!
+    //     console.warn(JSON.stringify(value));
+    //   }
+    // } catch (error) {
+    //   // Error retrieving data
+    // }
+
     for (var i = 1; i < this.lastIndexDex; i++) {
       this.props.fetchPkmn(i);
     }
@@ -53,12 +64,10 @@ export default class Pokedex extends Component {
       return;
     }
 
-    var icon = (this.props.favoritesPkmnIndex.indexOf(pkmnDatas.id) > -1) ? require('image!favorite') : require('image!no-favorite');
     this.props.detailsPkmn(pkmnDatas);
     this.props.navigator.push({
       title: pkmnDatas.name.capitalizeFirstLetter(),
       component: PokemonDetails,
-      
       passProps: {
         pkmn: pkmnDatas,
         navigator: this.props.navigator
@@ -67,16 +76,21 @@ export default class Pokedex extends Component {
   }
 
   _renderRow (rowData, sectionID, rowID) {
-    const datas = rowData.datas;
+    const { datas } = rowData;
+
+    var icon = (this.props.favoritesPkmnIndex.indexOf(datas.id) > -1) ? <Image source={require('image!favorite')} style={{width: 20, height: 20, top: 5, left: 5, position: 'absolute', zIndex: 9999 }} /> : null;
 
     return (
        <TouchableHighlight 
-        underlayColor={'#ffa7a7'} 
-        style={[styles.collectionItem, collectionItemBorder(datas.typesString[0])]} 
+        underlayColor={ Helpers.Utils.typeColor(datas.typesString[0]) + '50' }
+        style={[styles.collectionItem, collectionItemBorder(datas.typesString[0])]}
         accessibilityLabel={datas.name}
         onPress={this._onPressPkmn.bind(this, rowID, rowData)}
         >
+        <View>
+          { icon }
           <PokedexItem datas={datas}/>
+        </View>
       </TouchableHighlight>
     )
   }
@@ -91,7 +105,6 @@ export default class Pokedex extends Component {
       this.props.fetchPkmn(i);
     }
     this.lastIndexDex += 5;
-    
   }
 
   _renderRowDebug (rowData, sectionID, rowID) {
@@ -102,7 +115,6 @@ export default class Pokedex extends Component {
         >
           <PokedexItem datas={{name: String(rowData.id)}} />
       </TouchableHighlight>
-      
     )
   }
 
@@ -128,20 +140,11 @@ export default class Pokedex extends Component {
     }
   }
 
-  _renderNoResultScreen () {
+  _renderNoResultScreen() {
     return (
       <View style={styles.notFound}>
         <Image source={require('../img/pokdex-no-results.gif')} />
         <Text>No results</Text>
-      </View>
-    )
-  }
-
-  _renderLoader () {
-    return (
-      <View style={styles.loader}>
-        <Image source={require('../img/pokedex-loader.gif')} />
-        <Text>Loading...</Text>
       </View>
     )
   }

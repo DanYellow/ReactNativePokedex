@@ -81,9 +81,6 @@ const manageFavoritesPkmn = function (state = [], action) {
   switch (action.type) {
     case ActionTypes.TOGGLE_FAVORITE_PKMN:
       if (state.indexOf(action.id) > -1) {
-        // console.log("rege", state.indexOf(action.id))
-        
-        // console.log(state.splice(state.indexOf(action.id), 1))
         return state.filter(fav =>
           fav !== action.id
         );

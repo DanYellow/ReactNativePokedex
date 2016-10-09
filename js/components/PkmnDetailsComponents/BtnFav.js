@@ -3,7 +3,8 @@ import {
   View, 
   Text, 
   StyleSheet,
-  TouchableHighlight
+  TouchableHighlight,
+  AsyncStorage
 }
 from 'react-native';
 
@@ -14,13 +15,24 @@ export default class BtnFav extends Component {
     super(props, context);
 
     this.state = {
-      isAmongFavorite: false
+      isAmongFavorite: this.props.isAmongFavorite
     }
   }
 
   _onPressButton () {
     this.props.toggleFavoritePkmn(this.props.pkmnID);
-    this.setState({isAmongFavorite: !this.state.isAmongFavorite})
+    this.setState({isAmongFavorite: !this.state.isAmongFavorite});
+
+    
+
+  }
+
+  componentWillReceiveProps(nextProps) {
+    // try {
+    //   await AsyncStorage.setItem('favorites_pokemon', nextProps.favoritesPkmn);
+    // } catch (error) {
+    //   // Error saving data
+    // }
   }
 
   render() {
@@ -33,8 +45,8 @@ export default class BtnFav extends Component {
           </Text>
         </View>
       </TouchableHighlight>
-    ) 
-  } 
+    )
+  }
 }
 
 const Styles = StyleSheet.create({
@@ -51,5 +63,3 @@ const Styles = StyleSheet.create({
     fontSize: 16
   }
 });
-
-
